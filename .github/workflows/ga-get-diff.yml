@@ -1,5 +1,5 @@
-name: Security Scan
-run-name: Security Scan
+name: Git Diff
+run-name: Git Diff
 on: [push]
 jobs:
   diff:
