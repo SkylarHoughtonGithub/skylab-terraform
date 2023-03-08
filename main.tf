@@ -1,10 +1,10 @@
-locals {
-    name = "beta"
-    environment = "dev"
-}
+# locals {
+#     name = "beta"
+#     environment = "dev"
+# }
 
-resource "null_resource" "change" {
-    provisioner "local-exec" {
-        command = "echo hello world"
-    }
-}
+# resource "null_resource" "change" {
+#     provisioner "local-exec" {
+#         command = "echo hello world"
+#     }
+# }
