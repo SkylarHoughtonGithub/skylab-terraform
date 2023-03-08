@@ -1,5 +1,5 @@
-name: Snyk
-run-name: security scan
+name: Security Scan
+run-name: Security Scan
 on: [push]
 jobs:
   snyk:
