@@ -1,8 +1,13 @@
-- uses: Stockopedia/action-get-changed-files@v1
+name: Security Scan
+run-name: Security Scan
+on: [push]
+jobs:
+  diff:
+  - uses: Stockopedia/action-get-changed-files@v1
   id: get_changed
   with:
     github-token: ${{ secrets.GITHUB_TOKEN }}
     foldersOnly: true # to only include folders in the output
     format: newline # either json, csv or newline
-- name: Echo
-  run: echo ${{ steps.get_changed.outputs.changed }}
+  - name: Echo
+    run: echo ${{ steps.get_changed.outputs.changed }}
