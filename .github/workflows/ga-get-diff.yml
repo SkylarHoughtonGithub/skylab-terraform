@@ -12,4 +12,4 @@ jobs:
           foldersOnly: true # to only include folders in the output
           format: newline # either json, csv or newline
       - name: Echo
-        run: for i in ${{ steps.get_changed.outputs.changed }}; echo $i; done
+        run: for $i in ${{ steps.get_changed.outputs.changed }}; echo $i; done
