@@ -23,8 +23,6 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: validate vars      
-      run: echo "${{ github.event.inputs.environment}}/${{ github.event.inputs.product_dir}}/${{ github.event.inputs.working_dir}}"
     - name: set env var long name
       run: |
         if [[ "${{ github.event.inputs.environment }}" == "dev" ]]; then
@@ -38,3 +36,6 @@ jobs:
         fi
     - name: output env var
       run: echo $ENV
+
+    - name: validate vars      
+      run: echo "${{ $ENV }}/${{ github.event.inputs.product_dir}}/${{ github.event.inputs.working_dir}}"
