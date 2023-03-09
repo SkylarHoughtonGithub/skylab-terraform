@@ -27,11 +27,11 @@ jobs:
       run: echo "${{ github.event.inputs.environment}}/${{ github.event.inputs.product_dir}}/${{ github.event.inputs.working_dir}}"
     - name: set env var long name
       run: |
-        if [[ ${{ github.event.inputs.environment }} == "dev" ]]; then
+        if [[ "${{ github.event.inputs.environment }}" == "dev" ]]; then
           echo "development" >> $GITHUB_ENV
-        elif [[ ${{ github.event.inputs.environment }} == "test" ]]; then
+        elif [[ "${{ github.event.inputs.environment }}" == "test" ]]; then
           echo "staging" >> $GITHUB_ENV
-        elif [[ ${{ github.event.inputs.environment }} == "production" ]]; then
+        elif [[ "${{ github.event.inputs.environment }}" == "production" ]]; then
           echo "production" >> $GITHUB_ENV
         else
           echo "development" >> $GITHUB_ENV
