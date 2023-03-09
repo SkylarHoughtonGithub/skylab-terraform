@@ -28,13 +28,13 @@ jobs:
     - name: set env var long name
       run: |
         if [[ "${{ github.event.inputs.environment }}" == "dev" ]]; then
-          echo "development" >> $GITHUB_ENV
+          echo "ENV=development" >> $GITHUB_ENV
         elif [[ "${{ github.event.inputs.environment }}" == "test" ]]; then
-          echo "staging" >> $GITHUB_ENV
+          echo "ENV=staging" >> $GITHUB_ENV
         elif [[ "${{ github.event.inputs.environment }}" == "production" ]]; then
-          echo "production" >> $GITHUB_ENV
+          echo "ENV=production" >> $GITHUB_ENV
         else
-          echo "development" >> $GITHUB_ENV
+          echo "ENV=development" >> $GITHUB_ENV
         fi
     - name: output env var
-      run: echo $GITHUB_ENV
+      run: echo $ENV
