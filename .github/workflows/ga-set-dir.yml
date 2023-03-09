@@ -1,0 +1,27 @@
+name: Git Diff
+run-name: Git Diff
+on:
+  push:
+    branches:
+    - '**'
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        options:
+        - dev
+        - uat
+        - prod
+      product_dir:
+        type: string
+        description: Product dir to run workflow from (eg- terraform)
+      working_dir:
+        type: string
+        description: Working resource dir to run workflow from (eg- ec2)
+jobs:
+  vars:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: validate vars      
+      run: echo "${{ github.event.inputs.environment}} \n ${{ github.event.inputs.product_dir}} \n ${{ github.event.inputs.working_dir}}"
