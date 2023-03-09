@@ -1,6 +1,7 @@
 name: Git Dir
 run-name: Git Dir
 on:
+  push:
   workflow_dispatch:
     inputs:
       environment:
