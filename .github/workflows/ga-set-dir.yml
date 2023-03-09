@@ -35,5 +35,6 @@ jobs:
           echo "production" >> $GITHUB_ENV
         else
           echo "development" >> $GITHUB_ENV
+        fi
     - name: output env var
       run: echo $GITHUB_ENV
