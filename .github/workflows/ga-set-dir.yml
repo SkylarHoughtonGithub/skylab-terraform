@@ -1,5 +1,5 @@
-name: Git Diff
-run-name: Git Diff
+name: Git Dir
+run-name: Git Dir
 on:
   push:
     branches:
@@ -24,4 +24,4 @@ jobs:
     
     steps:
     - name: validate vars      
-      run: echo "${{ github.event.inputs.environment}} \n ${{ github.event.inputs.product_dir}} \n ${{ github.event.inputs.working_dir}}"
+      run: echo "${{ github.event.inputs.environment}}/${{ github.event.inputs.product_dir}}/${{ github.event.inputs.working_dir}}"
