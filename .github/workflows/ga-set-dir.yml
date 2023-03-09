@@ -38,4 +38,4 @@ jobs:
       run: echo $ENV
 
     - name: validate vars      
-      run: echo "$ENV/${{ github.event.inputs.product_dir}}/${{ github.event.inputs.working_dir}}"
+      run: echo "/modules/$ENV/${{ github.event.inputs.product_dir}}/${{ github.event.inputs.working_dir}}"
