@@ -9,12 +9,15 @@ on:
         - dev
         - test
         - prod
+        default: "dev"
       product_dir:
         type: string
         description: Product dir to run workflow from (eg- terraform)
+        default: "terraform"
       working_dir:
         type: string
         description: Working resource dir to run workflow from (eg- ec2)
+        default: "ec2"
 jobs:
   vars:
     runs-on: ubuntu-latest
