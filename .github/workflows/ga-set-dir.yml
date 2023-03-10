@@ -15,6 +15,11 @@ on:
         type: string
         description: Working resource dir to run workflow from (eg- ec2)
         default: "ec2"
+
+defaults:
+ run:
+  working-directory: "/modules/$ENV/${{ github.event.inputs.working_dir}}"
+
 jobs:
   Snyk:
     runs-on: ubuntu-latest
@@ -42,7 +47,6 @@ jobs:
       uses: snyk/actions/iac@master
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      working-directory: "/modules/$ENV/${{ github.event.inputs.working_dir}}"
       with:
         args: --report
 
