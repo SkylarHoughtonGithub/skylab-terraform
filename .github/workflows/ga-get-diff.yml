@@ -1,4 +1,4 @@
-name: Git Diff
+name: old1
 run-name: Git Diff
 on: [push]
 jobs:
