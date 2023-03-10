@@ -1,4 +1,4 @@
-name: Git Dir
+name: Synk Scan
 run-name: Git Dir
 on:
   push:
@@ -16,7 +16,7 @@ on:
         description: Working resource dir to run workflow from (eg- ec2)
         default: "ec2"
 jobs:
-  vars:
+  Snyk:
     runs-on: ubuntu-latest
     
     steps:
