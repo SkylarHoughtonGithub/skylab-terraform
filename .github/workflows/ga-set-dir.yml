@@ -16,9 +16,6 @@ on:
         description: Working resource dir to run workflow from (eg- ec2)
         default: "ec2"
 
-defaults:
- run:
-  working-directory: "/modules/$ENV/${{ github.event.inputs.working_dir}}"
 
 jobs:
   Snyk:
@@ -42,6 +39,10 @@ jobs:
 
     - name: Construct Run Path
       run: echo "/modules/$ENV/${{ github.event.inputs.working_dir}}"
+
+    - name: work-dir
+      run: |
+        cd /modules/$ENV/${{ github.event.inputs.working_dir}}
 
     - name: checkout
       uses: snyk/actions/iac@master
