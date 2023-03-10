@@ -38,12 +38,12 @@ jobs:
         fi
 
     - name: Construct Run Path
-      run: echo "/modules/$ENV/${{ github.event.inputs.working_dir}}"
+      run: echo "modules/$ENV/${{ github.event.inputs.working_dir}}"
 
     - name: work-dir
       run: |
         ls ${{ github.workspace }}
-        cd /modules/$ENV/${{ github.event.inputs.working_dir}}
+        cd modules/$ENV/${{ github.event.inputs.working_dir}}
 
     - name: checkout
       uses: snyk/actions/iac@master
