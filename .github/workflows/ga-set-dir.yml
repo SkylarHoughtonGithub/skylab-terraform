@@ -42,6 +42,7 @@ jobs:
 
     - name: work-dir
       run: |
+        cat ${{ github.workspace }}
         cd /modules/$ENV/${{ github.event.inputs.working_dir}}
 
     - name: checkout
