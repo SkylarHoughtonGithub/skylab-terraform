@@ -1,7 +1,7 @@
 name: Synk Scan
 run-name: Git Dir
 on:
-  push:
+  pull_request:
   workflow_dispatch:
     inputs:
       environment:
@@ -16,7 +16,6 @@ on:
         description: Working resource dir to run workflow from (eg- ec2)
         default: "ec2"
 
-
 jobs:
   Snyk:
     runs-on: ubuntu-latest
@@ -25,7 +24,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: set env var long name
+    - name: Set Environment
       run: |
         if [[ "${{ github.event.inputs.environment }}" == "dev" ]]; then
           echo "ENV=development" >> $GITHUB_ENV
@@ -40,16 +39,20 @@ jobs:
     - name: Construct Run Path
       run: echo "modules/$ENV/${{ github.event.inputs.working_dir}}"
 
-    - name: work-dir
+    - name: modules/$ENV/${{ github.event.inputs.working_dir}}
       run: |
-        ls ${{ github.workspace }}
         cd modules/$ENV/${{ github.event.inputs.working_dir}}
 
-    - name: checkout
+    - name: Run Snyk
+      id: snyk
       uses: snyk/actions/iac@master
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
         args: --report
 
-#TODO: https://github.com/marketplace/actions/comment-pull-request
+    - name: Add to PR comment
+      uses: thollander/actions-comment-pull-request@v2
+      with:
+        message: "{{ steps.snyk.outputs.stdout }}"
+
