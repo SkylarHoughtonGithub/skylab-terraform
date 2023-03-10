@@ -20,6 +20,9 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
     - name: set env var long name
       run: |
         if [[ "${{ github.event.inputs.environment }}" == "dev" ]]; then
@@ -31,15 +34,16 @@ jobs:
         else
           echo "ENV=development" >> $GITHUB_ENV
         fi
-    - name: Checkout
-      uses: actions/checkout@v3
 
     - name: Construct Run Path
-      run: echo "/modules/$ENV/${{ github.event.inputs.working_dir}}" >> $GITHUB_ENV
+      run: echo "/modules/$ENV/${{ github.event.inputs.working_dir}}"
 
     - name: checkout
       uses: snyk/actions/iac@master
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
+        file: "/modules/$ENV/${{ github.event.inputs.working_dir}}"
         args: --report
+
+#TODO: https://github.com/marketplace/actions/comment-pull-request
