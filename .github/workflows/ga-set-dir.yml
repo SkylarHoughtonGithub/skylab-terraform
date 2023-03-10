@@ -11,10 +11,6 @@ on:
         - test
         - prod
         default: "dev"
-      product_dir:
-        type: string
-        description: Product dir to run workflow from (eg- terraform)
-        default: "terraform"
       working_dir:
         type: string
         description: Working resource dir to run workflow from (eg- ec2)
@@ -35,8 +31,15 @@ jobs:
         else
           echo "ENV=development" >> $GITHUB_ENV
         fi
-    - name: output env var
-      run: echo $ENV
+    - name: Checkout
+      uses: actions/checkout@v3
 
-    - name: validate vars      
-      run: echo "/modules/$ENV/${{ github.event.inputs.product_dir}}/${{ github.event.inputs.working_dir}}"
+    - name: Construct Run Path
+      run: echo "/modules/$ENV/${{ github.event.inputs.working_dir}}" >> $GITHUB_ENV
+
+    - name: checkout
+      uses: snyk/actions/iac@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        args: --report
