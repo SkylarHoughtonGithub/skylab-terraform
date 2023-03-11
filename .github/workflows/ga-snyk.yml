@@ -36,9 +36,6 @@ jobs:
           echo "ENV=development" >> $GITHUB_ENV
         fi
 
-    - name: Construct Run Path
-      run: echo "modules/$ENV/${{ github.event.inputs.working_dir}}"
-
     - name: modules/$ENV/${{ github.event.inputs.working_dir}}
       run: |
         cd modules/$ENV/${{ github.event.inputs.working_dir}}
@@ -51,9 +48,9 @@ jobs:
       with:
         args: --report
 
-# TODO: properly capture message var and save in pr comment
-    - name: Add to PR comment
-      uses: thollander/actions-comment-pull-request@v2
-      with:
-        message: "{{ steps.snyk.outputs.stdout }}"
+# # TODO: properly capture message var and save in pr comment
+#     - name: Add to PR comment
+#       uses: thollander/actions-comment-pull-request@v2
+#       with:
+#         message: "{{ steps.snyk.outputs.stdout }}"
 

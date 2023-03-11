@@ -45,11 +45,12 @@ jobs:
       
       - name: terraform fmt
         uses: dflook/terraform-fmt@v1
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v2
-        with:
-          commit-message: terraform fmt
-          title: Reformat terraform files
-          body: Update terraform files to canonical format using `terraform fmt`
-          branch: automated-terraform-fmt
+        
+# TODO: Address bug: https://github.blog/changelog/2020-10-01-github-actions-deprecating-set-env-and-add-path-commands/
+      # - name: Create Pull Request
+      #   uses: peter-evans/create-pull-request@v2
+      #   with:
+      #     commit-message: terraform fmt
+      #     title: Reformat terraform files
+      #     body: Update terraform files to canonical format using `terraform fmt`
+      #     branch: automated-terraform-fmt
