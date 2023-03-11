@@ -1,0 +1,63 @@
+name: Synk Scan
+run-name: Synk Scan
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        options:
+        - dev
+        - test
+        - prod
+        default: "dev"
+      working_dir:
+        type: string
+        description: Working resource dir to run workflow from (eg- ec2)
+        default: "ec2"
+
+jobs:
+  Snyk:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Set Environment
+      run: |
+        if [[ "${{ github.event.inputs.environment }}" == "dev" ]]; then
+          echo "ENV=development" >> $GITHUB_ENV
+        elif [[ "${{ github.event.inputs.environment }}" == "test" ]]; then
+          echo "ENV=staging" >> $GITHUB_ENV
+        elif [[ "${{ github.event.inputs.environment }}" == "production" ]]; then
+          echo "ENV=production" >> $GITHUB_ENV
+        else
+          echo "ENV=development" >> $GITHUB_ENV
+        fi
+
+    - name: modules/$ENV/${{ github.event.inputs.working_dir}}
+      run: |
+        cd modules/$ENV/${{ github.event.inputs.working_dir}}
+
+    - name: Run Snyk
+      id: snyk
+      uses: snyk/actions/iac@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        args: --report
+
+<<<<<<< HEAD:.github/workflows/ga-snyk.yml
+# # TODO: properly capture message var and save in pr comment
+#     - name: Add to PR comment
+#       uses: thollander/actions-comment-pull-request@v2
+#       with:
+#         message: "{{ steps.snyk.outputs.stdout }}"
+=======
+    - name: Add to PR comment
+      uses: thollander/actions-comment-pull-request@v2
+      with:
+        message: ${{ steps.snyk.outputs.result }}
+>>>>>>> 62cae0fe35d3f66a1880b0a3e9f8e0b009a25076:.github/workflows/ga-set-dir.yml
+
