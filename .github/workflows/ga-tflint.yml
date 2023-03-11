@@ -1,0 +1,56 @@
+name: TFLint
+run-name: Git Dir
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        options:
+        - dev
+        - test
+        - prod
+        default: "dev"
+      working_dir:
+        type: string
+        description: Working resource dir to run workflow from (eg- ec2)
+        default: "ec2"
+
+jobs:
+  tflint:
+    runs-on: ubuntu-latest
+    name: Check terraform file are formatted correctly
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set Environment
+        run: |
+          if [[ "${{ github.event.inputs.environment }}" == "dev" ]]; then
+            echo "ENV=development" >> $GITHUB_ENV
+          elif [[ "${{ github.event.inputs.environment }}" == "test" ]]; then
+            echo "ENV=staging" >> $GITHUB_ENV
+          elif [[ "${{ github.event.inputs.environment }}" == "production" ]]; then
+            echo "ENV=production" >> $GITHUB_ENV
+          else
+            echo "ENV=development" >> $GITHUB_ENV
+          fi
+
+      - name: Construct Run Path
+        run: echo "modules/$ENV/${{ github.event.inputs.working_dir}}"
+
+      - name: modules/$ENV/${{ github.event.inputs.working_dir}}
+        run: |
+          cd modules/$ENV/${{ github.event.inputs.working_dir}}
+        - name: terraform fmt
+          uses: dflook/terraform-fmt@v1
+          with:
+            path: my-terraform-config
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v2
+        with:
+          commit-message: terraform fmt
+          title: Reformat terraform files
+          body: Update terraform files to canonical format using `terraform fmt`
+          branch: automated-terraform-fmt
