@@ -47,7 +47,7 @@ jobs:
         uses: dflook/terraform-fmt@v1
 
       - name: switching from HTTPS to SSH
-        run: git remote set-url origin ${{ secrets.ssh }}
+        run: git remote set-url origin ${{ secrets.SSH }}
       - name: check for changes
         run: git status
       - name: stage changed files
