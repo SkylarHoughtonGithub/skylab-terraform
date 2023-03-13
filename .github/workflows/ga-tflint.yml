@@ -26,15 +26,20 @@ jobs:
 
       - name: git config
         run: |
-          git config --global user.name $"{{ secrets.username }}" 
-          git config --global user.email $"{{ secrets.email }}"
+          git config --global user.name $username
+          git config --global user.email $email
+        env:
+          username: ${{ secrets.username }}
+          email: ${{ secrets.email }}
 
       - name: add git key
         env: 
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          ssh-add - <<< "${{ secrets.ssh }}"
+          ssh-add - <<< $ssh
+        env:
+          ssh: ${{ secrets.ssh }}
 
       - name: Set Environment
         run: |
@@ -61,7 +66,9 @@ jobs:
       - name: test git config
         run: git config -l
       - name: Commit changes back to repo
-        run: git remote set-url origin ${{ secrets.ssh_url }}
+        run: git remote set-url origin $ssh_url
+        env:
+          ssh_url: ${{ secrets.ssh_url }}
       - name: git status
         run: git status
       - name: Stage Changes
