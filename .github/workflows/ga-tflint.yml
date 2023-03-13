@@ -59,10 +59,14 @@ jobs:
         uses: dflook/terraform-fmt@v1
         
       - name: Commit changes back to repo
-        run: |
-          git remote set-url origin ${{ secrets.ssh_url }}
-          git status
-          git commit -a
-          git commit -m "Auto linting TF files"
-          git fetch origin master
-          git push origin HEAD:master
+        run: git remote set-url origin ${{ secrets.ssh_url }}
+      - name: git status
+        run: git status
+      - name: Stage Changes
+        run: git commit -a
+      - name: Auto linting TF files
+        run: git commit -m "Auto linting TF files"
+      - name: Fetch origin
+        run: git fetch origin master
+      - name: push changes
+        run: git push origin HEAD:master
