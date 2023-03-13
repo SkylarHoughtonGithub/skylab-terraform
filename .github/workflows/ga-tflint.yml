@@ -34,12 +34,11 @@ jobs:
 
       - name: add git key
         env: 
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: |
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          ssh-add - <<< $ssh
-        env:
+          ssh_auth_sock: /tmp/ssh_agent.sock
           ssh: ${{ secrets.ssh }}
+        run: |
+          ssh-agent -a $ssh_auth_sock > /dev/null
+          ssh-add - <<< $ssh
 
       - name: Set Environment
         run: |
