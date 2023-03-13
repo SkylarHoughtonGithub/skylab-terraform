@@ -59,7 +59,7 @@ jobs:
         uses: dflook/terraform-fmt@v1
         
       - name: test git config
-        run: git config
+        run: git config -l
       - name: Commit changes back to repo
         run: git remote set-url origin ${{ secrets.ssh_url }}
       - name: git status
