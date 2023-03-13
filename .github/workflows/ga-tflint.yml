@@ -37,7 +37,7 @@ jobs:
           ssh_auth_sock: /tmp/ssh_agent.sock
           ssh: ${{ secrets.ssh }}
         run: |
-          ssh-agent -a $ssh_auth_sock > /dev/null
+          eval 'ssh-agent -a $ssh_auth_sock'
           ssh-add - <<< $ssh
 
       - name: Set Environment
