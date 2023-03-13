@@ -62,7 +62,7 @@ jobs:
         run: |
           git remote set-url origin ${{ secrets.ssh_url }}
           git status
-          git add .
+          git commit -a
           git commit -m "$GITHUB_REF: Auto linting TF files"
           git fetch origin master
           git push origin HEAD:master
