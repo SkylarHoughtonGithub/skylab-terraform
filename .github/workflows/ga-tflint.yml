@@ -26,8 +26,8 @@ jobs:
 
       - name: git config
         run: |
-          git config --global $'{{ secrets.username }}' 
-          git config --global $'{{ secrets.email }}'
+          git config --global $"{{ secrets.username }}" 
+          git config --global $"{{ secrets.email }}"
 
       - name: add git key
         env: 
