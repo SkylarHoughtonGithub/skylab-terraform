@@ -24,6 +24,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - uses: oleksiyrudenko/gha-git-credentials@v2-latest
+        with:
+          token: '${{ secrets.GITHUB_TOKEN }}
+
       - name: Set Environment
         run: |
           if [[ "${{ github.event.inputs.environment }}" == "dev" ]]; then
@@ -46,6 +50,7 @@ jobs:
       - name: terraform fmt
         uses: dflook/terraform-fmt@v1
         
+      #Commit changes back to repo
       - name: switching from HTTPS to SSH
         run: git remote set-url origin ${{ secrets.SSH }}
       - name: check for changes
@@ -56,8 +61,6 @@ jobs:
         run: git commit -m "Auto linting TF files"
       - name: fetch from master
         run: git fetch origin master
-      - name: git config
-        run: git config user.name ${{ secrets.username }} && git config user.email ${{ secrets.email }}  
       - name: push code to master
         run: git push origin HEAD:master
         
