@@ -63,7 +63,7 @@ jobs:
       - name: git status
         run: git status
       - name: Stage Changes
-        run: git commit -a
+        run: git add --all
       - name: Auto linting TF files
         run: git commit -m "Auto linting TF files"
       - name: Fetch origin
