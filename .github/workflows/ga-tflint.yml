@@ -27,6 +27,10 @@ jobs:
       - uses: oleksiyrudenko/gha-git-credentials@v2-latest
         with:
           token: '${{ secrets.GITHUB_TOKEN }}'
+          global: true
+          name: 'SkylarHoughtonGithub'
+          email: 'SkylarHoughtonGithub0@gmail.com'
+          actor: 'SkylarHoughtonGithub'
 
       - name: Set Environment
         run: |
