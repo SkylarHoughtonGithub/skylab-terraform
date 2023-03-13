@@ -24,7 +24,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: git config
+        run: |
+          git config --global $'{{ secrets.username }}' 
+          git config --global $'{{ secrets.email }}'
 
+      - name: add git key
+        env: 
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add - <<< "${{ secrets.ssh }}"
 
       - name: Set Environment
         run: |
@@ -48,27 +58,11 @@ jobs:
       - name: terraform fmt
         uses: dflook/terraform-fmt@v1
         
-      #Commit changes back to repo
-      - name: switching from HTTPS to SSH
-        run: git remote set-url origin ${{ secrets.SSH }}
-      - name: check for changes
-        run: git status
-      - name: stage changed files
-        run: git add .
-      - name: git config
-        run: git config --global $'{{ secrets.username }}' && git config --global $'{{ secrets.email }}'
-      - name: commit changed files
-        run: git commit -m "Auto linting TF files"
-      - name: fetch from master
-        run: git fetch origin master
-      - name: push code to master
-        run: git push origin HEAD:master
-          
-# TODO: Address bug: https://github.blog/changelog/2020-10-01-github-actions-deprecating-set-env-and-add-path-commands/
-      # - name: Create Pull Request
-      #   uses: peter-evans/create-pull-request@v2
-      #   with:
-      #     commit-message: terraform fmt
-      #     title: Reformat terraform files
-      #     body: Update terraform files to canonical format using `terraform fmt`
-      #     branch: automated-terraform-fmt
+      - name: Commit changes back to repo
+        run: |
+          git remote set-url origin ${{ secrets.ssh_url }}
+          git status
+          git add .
+          git commit -m "$GITHUB_REF: Auto linting TF files"
+          git fetch origin master
+          git push origin HEAD:master
