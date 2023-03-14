@@ -54,3 +54,30 @@ jobs:
 #       with:
 #         message: "{{ steps.snyk.outputs.stdout }}"
 
+- name: Update Pull Request
+  uses: actions/github-script@v6
+  if: github.event_name == 'pull_request'
+  env:
+    SNYK: "{{ steps.snyk.outputs.stdout }}"
+  with:
+    github-token: ${{ secrets.GH_TOKEN }}
+    script: |
+      const output = `#### Snyk IaC Security Scan \`${{ steps.snky.outcome }}\`
+
+      <details><summary>Show Snyk Output</summary>
+
+      \`\`\`\n
+      ${process.env.SNYK}
+      \`\`\`
+
+      </details>
+
+      *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+      github.rest.issues.createComment({
+        issue_number: context.issue.number,
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        body: output
+      })
+
