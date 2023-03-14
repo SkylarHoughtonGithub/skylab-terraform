@@ -51,10 +51,10 @@ jobs:
       with:
         args: --report
 
-    - name: echo var
-      run: echo $SNYK
-      env:
-        snyk: "{{ steps.snyk.outputs.stdout }}"
+    - name: Upload result to GitHub Code Scanning
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: snyk.sarif
 # # TODO: properly capture message var and save in pr comment
 #     - name: Add to PR comment
 #       uses: thollander/actions-comment-pull-request@v2
