@@ -52,8 +52,13 @@ jobs:
           else
             echo "ENV=development" >> $GITHUB_ENV
           fi
-      - name: ls
-        run: ls
+
+      - name: Construct Run Path
+        run: echo "modules/$ENV/${{ github.event.inputs.working_dir}}"
+      - name: Change working dir
+        run: |
+          cd modules/$ENV/${{ github.event.inputs.working_dir}}
+
       - name: terraform fmt
         uses: dflook/terraform-fmt-check@v1
         id: fmt-check
@@ -64,11 +69,6 @@ jobs:
         if: ${{ failure() && steps.fmt-check.outputs.failure-reason == 'check-failed' }}
         run: echo "terraform formatting check failed"
 
-      # - name: Construct Run Path
-      #   run: echo "modules/$ENV/${{ github.event.inputs.working_dir}}"
-      # - name: Change working dir
-      #   run: |
-      #     cd modules/$ENV/${{ github.event.inputs.working_dir}}
 
       # Execute
       # - name: terraform fmt
