@@ -39,7 +39,7 @@ jobs:
           echo "ENV=development" >> $GITHUB_ENV
         fi
 
-    - name: modules/$ENV/${{ github.event.inputs.working_dir}}
+    - name: Set Running Dir
       run: |
         cd modules/$ENV/${{ github.event.inputs.working_dir}}
 
@@ -53,6 +53,8 @@ jobs:
 
     - name: echo var
       run: echo $SNYK
+      env:
+        snyk: "{{ steps.snyk.outputs.stdout }}"
 # # TODO: properly capture message var and save in pr comment
 #     - name: Add to PR comment
 #       uses: thollander/actions-comment-pull-request@v2
