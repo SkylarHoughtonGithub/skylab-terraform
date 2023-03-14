@@ -24,21 +24,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: get refs var value
-        run: echo ${GITHUB_REF}
+      # - name: get refs var value
+      #   run: echo ${GITHUB_REF}
  
 
       # Authentication
-      - name: git config
-        run: |
-          git config --global user.name $username
-          git config --global user.email $email
-        env:
-          username: ${{ secrets.username }}
-          email: ${{ secrets.email }}
-      - uses: webfactory/ssh-agent@v0.7.0
-        with:
-          ssh-private-key: ${{ secrets.SSH }}
+      # - name: git config
+      #   run: |
+      #     git config --global user.name $username
+      #     git config --global user.email $email
+      #   env:
+      #     username: ${{ secrets.username }}
+      #     email: ${{ secrets.email }}
+      # - uses: webfactory/ssh-agent@v0.7.0
+      #   with:
+      #     ssh-private-key: ${{ secrets.SSH }}
       
       #Setup Env
       - name: Set Environment Var
@@ -52,15 +52,25 @@ jobs:
           else
             echo "ENV=development" >> $GITHUB_ENV
           fi
-      - name: Construct Run Path
-        run: echo "modules/$ENV/${{ github.event.inputs.working_dir}}"
-      - name: Change working dir
-        run: |
-          cd modules/$ENV/${{ github.event.inputs.working_dir}}
+      - name: terraform fmt
+        uses: dflook/terraform-fmt-check@v1
+        id: fmt-check
+        with:
+          path: modules/$ENV/${{ github.event.inputs.working_dir}}
+
+      - name: Wrong formatting found
+        if: ${{ failure() && steps.fmt-check.outputs.failure-reason == 'check-failed' }}
+        run: echo "terraform formatting check failed"
+
+      # - name: Construct Run Path
+      #   run: echo "modules/$ENV/${{ github.event.inputs.working_dir}}"
+      # - name: Change working dir
+      #   run: |
+      #     cd modules/$ENV/${{ github.event.inputs.working_dir}}
 
       # Execute
-      - name: terraform fmt
-        uses: dflook/terraform-fmt@v1
+      # - name: terraform fmt
+      #   uses: dflook/terraform-fmt@v1
 
       # - name: Create Pull Request
       #   uses: peter-evans/create-pull-request@v2
@@ -70,19 +80,19 @@ jobs:
       #     body: Update terraform files to canonical format using `terraform fmt`
       #     branch: automated-terraform-fmt
       # Cleanup Run
-      - name: Set Origin URL
-        run: git remote set-url origin $ssh_url
-        env:
-          ssh_url: ${{ secrets.ssh_url }}
-      - name: Check Changes
-        run: git status
-      - name: Fetch Origin ${GITHUB_REF##*/}
-        run: git fetch ${GITHUB_REF##*/}
-      - name: Pull Changes from Origin
-        run: git pull ${GITHUB_REF##*/}
-      - name: Stage Changes
-        run: git add --all
-      - name: Commit Changes
-        run: git commit -m "Auto linting TF files"
-      - name: Push Changes to Origin
-        run: git push ${GITHUB_REF##*/}
+      # - name: Set Origin URL
+      #   run: git remote set-url origin $ssh_url
+      #   env:
+      #     ssh_url: ${{ secrets.ssh_url }}
+      # - name: Check Changes
+      #   run: git status
+      # - name: Fetch Origin ${GITHUB_REF##*/}
+      #   run: git fetch ${GITHUB_REF##*/}
+      # - name: Pull Changes from Origin
+      #   run: git pull ${GITHUB_REF##*/}
+      # - name: Stage Changes
+      #   run: git add --all
+      # - name: Commit Changes
+      #   run: git commit -m "Auto linting TF files"
+      # - name: Push Changes to Origin
+      #   run: git push ${GITHUB_REF##*/}
