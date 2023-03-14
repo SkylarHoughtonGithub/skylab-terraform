@@ -29,6 +29,7 @@ jobs:
         run: |
           git config --global user.name $username
           git config --global user.email $email
+          git config 
         env:
           username: ${{ secrets.username }}
           email: ${{ secrets.email }}
@@ -70,8 +71,8 @@ jobs:
       - name: Commit Changes
         run: git commit -m "Auto linting TF files"
       - name: Fetch Origin
-        run: git fetch origin main
+        run: git fetch
       - name: Pull Changes from Origin
-        run: git pull origin HEAD:main
+        run: git pull
       - name: Push Changes to Origin
-        run: git push origin HEAD:main
+        run: git push
