@@ -23,7 +23,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
+ 
+      # Authentication
       - name: git config
         run: |
           git config --global user.name $username
@@ -31,19 +32,12 @@ jobs:
         env:
           username: ${{ secrets.username }}
           email: ${{ secrets.email }}
-
-      # - name: add git key
-      #   env: 
-      #     ssh_auth_sock: /tmp/ssh_agent.sock
-      #     ssh: ${{ secrets.ssh }}
-      #   # run: |
-      #   #   eval 'ssh-agent -a $ssh_auth_sock'
-      #   #   ssh-add - <<< $ssh
       - uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.SSH }}
-
-      - name: Set Environment
+      
+      #Setup Env
+      - name: Set Environment Var
         run: |
           if [[ "${{ github.event.inputs.environment }}" == "dev" ]]; then
             echo "ENV=development" >> $GITHUB_ENV
@@ -54,30 +48,28 @@ jobs:
           else
             echo "ENV=development" >> $GITHUB_ENV
           fi
-
       - name: Construct Run Path
         run: echo "modules/$ENV/${{ github.event.inputs.working_dir}}"
-
-      - name: modules/$ENV/${{ github.event.inputs.working_dir}}
+      - name: Change working dir
         run: |
           cd modules/$ENV/${{ github.event.inputs.working_dir}}
-      
+
+      # Execute
       - name: terraform fmt
         uses: dflook/terraform-fmt@v1
-        
-      - name: test git config
-        run: git config -l
-      - name: Commit changes back to repo
+
+      # Cleanup Run
+      - name: Get origin
         run: git remote set-url origin $ssh_url
         env:
           ssh_url: ${{ secrets.ssh_url }}
-      - name: git status
+      - name: Check Changes
         run: git status
       - name: Stage Changes
         run: git add --all
-      - name: Auto linting TF files
+      - name: Commit Changes
         run: git commit -m "Auto linting TF files"
       - name: Fetch origin
-        run: git fetch origin master
-      - name: push changes
-        run: git push origin HEAD:master
+        run: git fetch origin main
+      - name: Push Changes to origin
+        run: git push origin HEAD:main
