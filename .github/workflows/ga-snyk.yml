@@ -62,7 +62,7 @@ jobs:
       with:
         github-token: ${{ secrets.GH_TOKEN }}
         script: |
-          const output = `#### Snyk IaC Security Scan \`${{ steps.snyk.outcome }}\`
+          const output = `#### Snyk IaC Security Scan \`${{ steps.snky.outcome }}\`
 
           <details><summary>Show Snyk Output</summary>
 
@@ -71,7 +71,8 @@ jobs:
           \`\`\`
 
           </details>
-          ;
+
+          *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
 
           github.rest.issues.createComment({
             issue_number: context.issue.number,
