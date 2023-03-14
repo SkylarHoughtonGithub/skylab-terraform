@@ -2,19 +2,6 @@ name: TFLint
 run-name: TFLint
 on:
   pull_request:
-  workflow_dispatch:
-    inputs:
-      environment:
-        type: choice
-        options:
-        - dev
-        - test
-        - prod
-        default: "dev"
-      working_dir:
-        type: string
-        description: Working resource dir to run workflow from (eg- ec2)
-        default: "ec2"
 
 jobs:
   tflint:
@@ -24,41 +11,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      # - name: get refs var value
-      #   run: echo ${GITHUB_REF}
- 
-
-      # Authentication
-      # - name: git config
-      #   run: |
-      #     git config --global user.name $username
-      #     git config --global user.email $email
-      #   env:
-      #     username: ${{ secrets.username }}
-      #     email: ${{ secrets.email }}
-      # - uses: webfactory/ssh-agent@v0.7.0
-      #   with:
-      #     ssh-private-key: ${{ secrets.SSH }}
-      
-      # #Setup Env
-      # - name: Set Environment Var
-      #   run: |
-      #     if [[ "${{ github.event.inputs.environment }}" == "dev" ]]; then
-      #       echo "ENV=development" >> $GITHUB_ENV
-      #     elif [[ "${{ github.event.inputs.environment }}" == "test" ]]; then
-      #       echo "ENV=staging" >> $GITHUB_ENV
-      #     elif [[ "${{ github.event.inputs.environment }}" == "production" ]]; then
-      #       echo "ENV=production" >> $GITHUB_ENV
-      #     else
-      #       echo "ENV=development" >> $GITHUB_ENV
-      #     fi
-
-      # - name: Construct Run Path
-      #   run: echo "modules/$ENV/${{ github.event.inputs.working_dir}}"
-      # - name: Change working dir
-      #   run: |
-      #     cd modules/$ENV/${{ github.event.inputs.working_dir}}
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
 
@@ -66,37 +18,10 @@ jobs:
         id: fmt
         run: terraform fmt -check -recursive
 
+      - name: Terraform Init
+        id: init
+        run: terraform init
 
-      # - name: Wrong formatting found
-      #   if: ${{ failure() && steps.fmt-check.outputs.failure-reason == 'check-failed' }}
-      #   run: echo "terraform formatting check failed"
-
-
-      # Execute
-      # - name: terraform fmt
-      #   uses: dflook/terraform-fmt@v1
-
-      # - name: Create Pull Request
-      #   uses: peter-evans/create-pull-request@v2
-      #   with:
-      #     commit-message: terraform fmt
-      #     title: Reformat terraform files
-      #     body: Update terraform files to canonical format using `terraform fmt`
-      #     branch: automated-terraform-fmt
-      # Cleanup Run
-      # - name: Set Origin URL
-      #   run: git remote set-url origin $ssh_url
-      #   env:
-      #     ssh_url: ${{ secrets.ssh_url }}
-      # - name: Check Changes
-      #   run: git status
-      # - name: Fetch Origin ${GITHUB_REF##*/}
-      #   run: git fetch ${GITHUB_REF##*/}
-      # - name: Pull Changes from Origin
-      #   run: git pull ${GITHUB_REF##*/}
-      # - name: Stage Changes
-      #   run: git add --all
-      # - name: Commit Changes
-      #   run: git commit -m "Auto linting TF files"
-      # - name: Push Changes to Origin
-      #   run: git push ${GITHUB_REF##*/}
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
