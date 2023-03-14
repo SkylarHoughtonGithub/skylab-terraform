@@ -1,5 +1,5 @@
 name: Synk Scan
-run-name: Git Dir
+run-name: Synk Scan
 on:
   pull_request:
   workflow_dispatch:
@@ -20,6 +20,9 @@ jobs:
   Snyk:
     runs-on: ubuntu-latest
     
+    outputs:
+      snyk: "{{ steps.snyk.outputs.stdout }}"
+
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -36,10 +39,7 @@ jobs:
           echo "ENV=development" >> $GITHUB_ENV
         fi
 
-    - name: Construct Run Path
-      run: echo "modules/$ENV/${{ github.event.inputs.working_dir}}"
-
-    - name: modules/$ENV/${{ github.event.inputs.working_dir}}
+    - name: Set Running Dir
       run: |
         cd modules/$ENV/${{ github.event.inputs.working_dir}}
 
@@ -50,9 +50,3 @@ jobs:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
         args: --report
-
-    - name: Add to PR comment
-      uses: thollander/actions-comment-pull-request@v2
-      with:
-        message: ${{ steps.snyk.outputs.result }}
-
