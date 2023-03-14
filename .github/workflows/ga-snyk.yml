@@ -51,6 +51,8 @@ jobs:
       with:
         args: --report
 
+    - name: echo var
+      run: echo $SNYK
 # # TODO: properly capture message var and save in pr comment
 #     - name: Add to PR comment
 #       uses: thollander/actions-comment-pull-request@v2
