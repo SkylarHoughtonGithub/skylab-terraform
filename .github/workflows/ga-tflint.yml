@@ -71,5 +71,7 @@ jobs:
         run: git commit -m "Auto linting TF files"
       - name: Fetch Origin
         run: git fetch origin main
+      - name: Pull Changes from Origin
+        run: git pull origin HEAD:main
       - name: Push Changes to Origin
         run: git push origin HEAD:main
