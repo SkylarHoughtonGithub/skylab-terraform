@@ -52,6 +52,8 @@ jobs:
           else
             echo "ENV=development" >> $GITHUB_ENV
           fi
+      - name: ls
+        run: ls
       - name: terraform fmt
         uses: dflook/terraform-fmt-check@v1
         id: fmt-check
