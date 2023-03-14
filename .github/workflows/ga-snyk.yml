@@ -20,6 +20,9 @@ jobs:
   Snyk:
     runs-on: ubuntu-latest
     
+    outputs:
+      snyk: "{{ steps.snyk.outputs.stdout }}"
+
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -58,7 +61,7 @@ jobs:
       uses: actions/github-script@v6
       if: github.event_name == 'pull_request'
       env:
-        SNYK: "{{ steps.snyk.outputs.stdout }}"
+        SNYK: "{{ steps.snyk.outputs.snyk }}"
       with:
         github-token: ${{ secrets.GH_TOKEN }}
         script: |
