@@ -40,33 +40,36 @@ jobs:
       #   with:
       #     ssh-private-key: ${{ secrets.SSH }}
       
-      #Setup Env
-      - name: Set Environment Var
-        run: |
-          if [[ "${{ github.event.inputs.environment }}" == "dev" ]]; then
-            echo "ENV=development" >> $GITHUB_ENV
-          elif [[ "${{ github.event.inputs.environment }}" == "test" ]]; then
-            echo "ENV=staging" >> $GITHUB_ENV
-          elif [[ "${{ github.event.inputs.environment }}" == "production" ]]; then
-            echo "ENV=production" >> $GITHUB_ENV
-          else
-            echo "ENV=development" >> $GITHUB_ENV
-          fi
+      # #Setup Env
+      # - name: Set Environment Var
+      #   run: |
+      #     if [[ "${{ github.event.inputs.environment }}" == "dev" ]]; then
+      #       echo "ENV=development" >> $GITHUB_ENV
+      #     elif [[ "${{ github.event.inputs.environment }}" == "test" ]]; then
+      #       echo "ENV=staging" >> $GITHUB_ENV
+      #     elif [[ "${{ github.event.inputs.environment }}" == "production" ]]; then
+      #       echo "ENV=production" >> $GITHUB_ENV
+      #     else
+      #       echo "ENV=development" >> $GITHUB_ENV
+      #     fi
 
-      - name: Construct Run Path
-        run: echo "modules/$ENV/${{ github.event.inputs.working_dir}}"
-      - name: Change working dir
-        run: |
-          cd modules/$ENV/${{ github.event.inputs.working_dir}}
+      # - name: Construct Run Path
+      #   run: echo "modules/$ENV/${{ github.event.inputs.working_dir}}"
+      # - name: Change working dir
+      #   run: |
+      #     cd modules/$ENV/${{ github.event.inputs.working_dir}}
 
-      - name: terraform fmt
-        uses: dflook/terraform-fmt-check@v1
-        id: fmt-check
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -check -recursive
 
 
-      - name: Wrong formatting found
-        if: ${{ failure() && steps.fmt-check.outputs.failure-reason == 'check-failed' }}
-        run: echo "terraform formatting check failed"
+      # - name: Wrong formatting found
+      #   if: ${{ failure() && steps.fmt-check.outputs.failure-reason == 'check-failed' }}
+      #   run: echo "terraform formatting check failed"
 
 
       # Execute
