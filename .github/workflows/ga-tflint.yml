@@ -24,17 +24,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
  
+
       # Authentication
-      - name: git config
-        run: |
-          git config --global user.name $username
-          git config --global user.email $email
-        env:
-          username: ${{ secrets.username }}
-          email: ${{ secrets.email }}
-      - uses: webfactory/ssh-agent@v0.7.0
-        with:
-          ssh-private-key: ${{ secrets.SSH }}
+      # - name: git config
+      #   run: |
+      #     git config --global user.name $username
+      #     git config --global user.email $email
+      #   env:
+      #     username: ${{ secrets.username }}
+      #     email: ${{ secrets.email }}
+      # - uses: webfactory/ssh-agent@v0.7.0
+      #   with:
+      #     ssh-private-key: ${{ secrets.SSH }}
       
       #Setup Env
       - name: Set Environment Var
@@ -58,20 +59,27 @@ jobs:
       - name: terraform fmt
         uses: dflook/terraform-fmt@v1
 
-      # Cleanup Run
-      - name: Set Origin URL
-        run: git remote set-url origin $ssh_url
-        env:
-          ssh_url: ${{ secrets.ssh_url }}
-      - name: Check Changes
-        run: git status
-      - name: Stage Changes
-        run: git add --all
-      - name: Commit Changes
-        run: git commit -m "Auto linting TF files"
-      - name: Fetch Origin
-        run: git fetch
-      - name: Pull Changes from Origin
-        run: git pull
-      - name: Push Changes to Origin
-        run: git push
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v2
+        with:
+          commit-message: terraform fmt
+          title: Reformat terraform files
+          body: Update terraform files to canonical format using `terraform fmt`
+          branch: automated-terraform-fmt
+      # # Cleanup Run
+      # - name: Set Origin URL
+      #   run: git remote set-url origin $ssh_url
+      #   env:
+      #     ssh_url: ${{ secrets.ssh_url }}
+      # - name: Check Changes
+      #   run: git status
+      # - name: Stage Changes
+      #   run: git add --all
+      # - name: Commit Changes
+      #   run: git commit -m "Auto linting TF files"
+      # - name: Fetch Origin
+      #   run: git fetch
+      # - name: Pull Changes from Origin
+      #   run: git pull
+      # - name: Push Changes to Origin
+      #   run: git push
