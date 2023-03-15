@@ -1,4 +1,4 @@
-name: Ansible Lint
+name: AnsiLint
 run-name: ansible-lint
 on:
   pull_request:
