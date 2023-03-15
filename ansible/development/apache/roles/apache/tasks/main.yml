@@ -9,7 +9,7 @@
 - name: Start/enable httpd
   ansible.builtin.service:
     name: httpd
-    state: present
+    state: started
     enabled: true
 
 - name: Open firewalld
