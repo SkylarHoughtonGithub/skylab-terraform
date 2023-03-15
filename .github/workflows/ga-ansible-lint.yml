@@ -1,5 +1,5 @@
-name: Dependency Scan
-run-name: Synk Scan
+name: Ansible Lint
+run-name: ansible-lint
 on:
   pull_request:
   workflow_dispatch:
@@ -13,16 +13,12 @@ on:
         default: "dev"
       working_dir:
         type: string
-        description: Working resource dir to run workflow from (eg- ec2)
-        default: "ec2"
+        description: Working resource dir to run workflow from (eg- apache)
+        default: "apache"
 
 jobs:
-  Snyk:
+  AnsiLint:
     runs-on: ubuntu-latest
-    
-    outputs:
-      snyk: "{{ steps.snyk.outputs.stdout }}"
-
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -43,10 +39,5 @@ jobs:
       run: |
         cd modules/$ENV/${{ github.event.inputs.working_dir}}
 
-    - name: Run Snyk
-      id: snyk
-      uses: snyk/actions/iac@master
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      with:
-        args: --report
+    - name: Run ansible-lint
+      uses: ansible/ansible-lint-action@main
