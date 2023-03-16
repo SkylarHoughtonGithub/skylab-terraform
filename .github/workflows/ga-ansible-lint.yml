@@ -37,7 +37,7 @@ jobs:
 
     - name: Set Running Dir
       run: |
-        cd modules/$ENV/${{ github.event.inputs.working_dir}}
+        cd ansible/$ENV/${{ github.event.inputs.working_dir}}
 
     - name: Run ansible-lint
       id: ansible-lint

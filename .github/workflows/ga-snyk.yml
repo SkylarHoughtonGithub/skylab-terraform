@@ -41,7 +41,7 @@ jobs:
 
     - name: Set Running Dir
       run: |
-        cd modules/$ENV/${{ github.event.inputs.working_dir}}
+        cd terraform/$ENV/${{ github.event.inputs.working_dir}}
 
     - name: Run Snyk
       id: snyk

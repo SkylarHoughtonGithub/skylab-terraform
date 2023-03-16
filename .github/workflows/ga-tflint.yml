@@ -2,6 +2,19 @@ name: TFLint
 run-name: TFLint
 on:
   pull_request:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        options:
+        - dev
+        - test
+        - prod
+        default: "dev"
+      working_dir:
+        type: string
+        description: Working resource dir to run workflow from (eg- ec2)
+        default: "gcp-compute-vm"
 
 jobs:
   tflint:
@@ -11,18 +24,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
+    - name: Set Environment
+      run: |
+        if [[ "${{ github.event.inputs.environment }}" == "dev" ]]; then
+          echo "ENV=development" >> $GITHUB_ENV
+        elif [[ "${{ github.event.inputs.environment }}" == "test" ]]; then
+          echo "ENV=staging" >> $GITHUB_ENV
+        elif [[ "${{ github.event.inputs.environment }}" == "production" ]]; then
+          echo "ENV=production" >> $GITHUB_ENV
+        else
+          echo "ENV=development" >> $GITHUB_ENV
+        fi
 
-      - name: Terraform Format
-        id: fmt
-        run: terraform fmt -check -recursive
-      
-      #Need cd folder steps here to use validate
-      # - name: Terraform Init
-      #   id: init
-      #   run: terraform init
+    - name: Set Running Dir
+      run: |
+        cd terraform/$ENV/${{ github.event.inputs.working_dir}}
 
-      # - name: Terraform Validate
-      #   id: validate
-      #   run: terraform validate -no-color
+    - name: Terraform Init
+      id: init
+      run: terraform init
+
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate -no-color
