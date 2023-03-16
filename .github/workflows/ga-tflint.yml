@@ -17,12 +17,11 @@ on:
         default: "gcp-compute-vm"
 
 jobs:
-  tflint:
+  TFlint:
     runs-on: ubuntu-latest
-    name: TFLint
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
 
     - name: Set Environment
       run: |

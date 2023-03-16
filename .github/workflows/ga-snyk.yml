@@ -14,15 +14,11 @@ on:
       working_dir:
         type: string
         description: Working resource dir to run workflow from (eg- ec2)
-        default: "ec2"
+        default: "gcp-compute-vm"
 
 jobs:
   Snyk:
     runs-on: ubuntu-latest
-    
-    outputs:
-      snyk: "{{ steps.snyk.outputs.stdout }}"
-
     steps:
     - name: Checkout
       uses: actions/checkout@v3
