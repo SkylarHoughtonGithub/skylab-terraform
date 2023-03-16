@@ -1,7 +1,7 @@
 resource "google_compute_firewall" "flask" {
-  name    = "flask-app-firewall"
+  name          = "allow-flask-all"
   direction     = "INGRESS"
-  network       = module.google_compute_network.id
+  network       = var.network_id
   priority      = 1100
   source_ranges = ["0.0.0.0/0"]
 
