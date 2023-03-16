@@ -1,5 +1,5 @@
 variable "tags" {
-  default = ["allow-flask-all", "allow-ssh-all", "allow-icmp-all"]
+  default = ["web", "bastion", "default"]
 }
 
 
@@ -19,7 +19,7 @@ variable "instance_vars" {
   type = map(string)
   default = {
     name         = "rocky9-web1"
-    machine_type = "f1-micro"
+    machine_type = "e2-small"
     subnet_id : "homelab-subnet"
     zone = "us-central1-c"
   }
