@@ -1,0 +1,7 @@
+---
+- name: Install docker
+  hosts: web
+  remote_user: shoutsky
+  become: true
+  roles:
+   - docker
