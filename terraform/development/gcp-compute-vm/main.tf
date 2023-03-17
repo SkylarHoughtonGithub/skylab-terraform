@@ -4,6 +4,7 @@ resource "google_compute_instance" "instance" {
   machine_type = var.instance_vars["machine_type"]
   zone         = var.instance_vars["zone"]
   tags         = var.tags
+  deletion_protection = false #Dev machine
 
   boot_disk {
     initialize_params {
@@ -20,5 +21,12 @@ resource "google_compute_instance" "instance" {
     access_config {
       # Include this section to give the VM an external IP address
     }
+  
+  }
+  shielded_instance_config {
+    enable_secure_boot = true
+    enable_vtpm = true
+    enable_integrity_monitoring = true
+
   }
 }
