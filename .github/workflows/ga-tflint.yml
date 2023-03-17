@@ -46,3 +46,11 @@ jobs:
     - name: Terraform Validate
       id: validate
       run: terraform validate -no-color
+    
+    # https://terraform-docs.io/how-to/github-action/
+    - name: Render terraform docs and push changes back to PR
+      uses: terraform-docs/gh-actions@main
+      with:
+        output-file: README.md
+        output-method: inject
+        git-push: "true"

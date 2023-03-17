@@ -1,19 +1,16 @@
 # Create a single Compute Engine instance
 resource "google_compute_instance" "instance" {
-  name         = var.instance_vars["name"]
-  machine_type = var.instance_vars["machine_type"]
-  zone         = var.instance_vars["zone"]
-  tags         = var.tags
+  name                = var.instance_vars["name"]
+  machine_type        = var.instance_vars["machine_type"]
+  zone                = var.instance_vars["zone"]
+  tags                = var.tags
   deletion_protection = false #Dev machine
 
   boot_disk {
     initialize_params {
-      image = var.image["rocky9"]
+      image = var.image["rocky8"]
     }
   }
-
-  # Install NGINX
-  metadata_startup_script = "sudo dnf update; sudo dnf install -y epel-release python3 pip3 rsync vim nginx"
 
   network_interface {
     subnetwork = var.instance_vars["subnet_id"]
@@ -21,11 +18,11 @@ resource "google_compute_instance" "instance" {
     access_config {
       # Include this section to give the VM an external IP address
     }
-  
+
   }
   shielded_instance_config {
-    enable_secure_boot = true
-    enable_vtpm = true
+    enable_secure_boot          = true
+    enable_vtpm                 = true
     enable_integrity_monitoring = true
 
   }
