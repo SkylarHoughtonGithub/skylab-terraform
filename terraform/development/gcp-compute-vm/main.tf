@@ -8,9 +8,12 @@ resource "google_compute_instance" "instance" {
 
   boot_disk {
     initialize_params {
-      image = var.image["rocky8"]
+      image = var.image["rocky9"]
     }
   }
+
+  metadata_startup_script = file("${path.module}/files/gcp-compute-web.sh")
+
 
   network_interface {
     subnetwork = var.instance_vars["subnet_id"]
@@ -20,6 +23,7 @@ resource "google_compute_instance" "instance" {
     }
 
   }
+
   shielded_instance_config {
     enable_secure_boot          = true
     enable_vtpm                 = true

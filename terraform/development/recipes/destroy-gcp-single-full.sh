@@ -14,11 +14,12 @@ function install_deps() {
 }
 
 function setup_env() { 
-    export dirArray=("gcp-compute-vm" "gcp-compute-firewall" "gcp-compute-network")
+    export dirArray=("gcp-compute-vm" "gcp-compute-firewall" "gcp-compute-network" "gcp-iam")
     for dirs in ${dirArray[@]}
     do
         cd ../$dirs
         #TODO: Add error handling for commands
+        terraform init
         terraform destroy -auto-approve
         rm -rf .terraform* terraform.*
     done
