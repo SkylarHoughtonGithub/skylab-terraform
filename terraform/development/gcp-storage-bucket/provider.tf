@@ -2,7 +2,7 @@
 terraform {
   backend "gcs" {
     bucket = "shoutsky-state"
-    prefix = "terraform/storage-bucket"
+    prefix = "terraform/bucket"
   }
 }
 

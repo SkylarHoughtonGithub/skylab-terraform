@@ -1,4 +1,5 @@
 #! /bin/bash
+
 function install_deps() {
     export whereIsTerraform=$(which terraform | grep --quiet no)
     status=$?

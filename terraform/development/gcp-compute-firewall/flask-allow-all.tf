@@ -4,7 +4,7 @@ resource "google_compute_firewall" "flask-allow-all" {
   network       = var.network_id
   priority      = 1100
   source_ranges = ["0.0.0.0/0"]
-  target_tags   = ["web", "flask-allow-all"]
+  target_tags   = ["web"]
 
   allow {
     protocol = "tcp"

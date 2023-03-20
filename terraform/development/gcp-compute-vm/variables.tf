@@ -2,11 +2,11 @@
 variable "gcp_auth_file" {
   type        = string
   description = "GCP authentication file"
-  default = "~/.gcp/homelab-369103-bccda537b81e.json"
+  default     = "~/.gcp/homelab-369103-77cede0f3b18.json"
 }
 
 variable "tags" {
-  default = ["web", "bastion", "default"]
+  default = ["web", "ssh", "default"]
 }
 
 
@@ -15,7 +15,7 @@ variable "image" {
   default = {
     cos97lts      = "cos-cloud/cos-97-lts"
     rocky8        = "rocky-linux-cloud/rocky-linux-8-optimized-gcp"
-    rocky9        = "rocky-linux-cloud/rocky-linux-9-optimized-gcp"
+    rocky9        = "homelab-369103/gcp-rocky9-base"
     centos7       = "centos-cloud/centos-7"
     debian11      = "debian-cloud/debian-11"
     winserver2019 = "windows-cloud/windows-2019"

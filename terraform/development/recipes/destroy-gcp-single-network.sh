@@ -10,20 +10,19 @@ function install_deps() {
         yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
         yum -y install terraform
     else
-        echo "Terraform already installed. Proceeding..."
+        echo "Terraform installed. Proceeding..."
     fi
 }
 
 function setup_env() { 
-    export dirArray=("gcp-iam" "gcp-compute-network" "gcp-compute-firewall" "gcp-compute-vm")
+    export dirArray=("gcp-compute-firewall" "gcp-compute-network")
     for dirs in ${dirArray[@]}
     do
         cd ../$dirs
         #TODO: Add error handling for commands
         terraform init
-        terraform fmt
-        terraform validate
-        terraform apply -auto-approve
+        terraform destroy -auto-approve
+        rm -rf .terraform* terraform.*
     done
 }
 
