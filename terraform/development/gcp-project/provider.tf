@@ -3,13 +3,12 @@
 terraform {
   backend "gcs" {
     bucket = "shoutsky-state"
-    prefix = "terraform/vm"
+    prefix = "terraform/project"
   }
 }
 
 provider "google" {
-  project     = "homelab-369103"
-  credentials = file(var.gcp_auth_file)
-  region      = "us-central1"
-  zone        = "us-central1-c"
+  project = "homelab-369103"
+  region  = "us-central1"
+  zone    = "us-central1-c"
 }
