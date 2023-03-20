@@ -4,4 +4,4 @@
   remote_user: shoutsky
   become: true
   roles:
-   - apache
+   - ../roles/apache

@@ -2,5 +2,5 @@
 variable "gcp_auth_file" {
   type        = string
   description = "GCP authentication file"
-  default     = "~/.gcp/homelab-369103-77cede0f3b18.json"
+  default     = "~/.gcp/homelab-369103-1c2ee9cdd6be.json"
 }

@@ -15,7 +15,7 @@ function install_deps() {
 }
 
 function setup_env() { 
-    export dirArray=("gcp-iam" "gcp-compute-network" "gcp-compute-firewall" "gcp-compute-vm")
+    export dirArray=("gcp-compute-network" "gcp-compute-firewall" "gcp-compute-vm")
     for dirs in ${dirArray[@]}
     do
         cd ../$dirs
