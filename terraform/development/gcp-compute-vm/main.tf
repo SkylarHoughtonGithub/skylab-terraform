@@ -12,7 +12,7 @@ resource "google_compute_instance" "instance" {
     }
   }
 
-  metadata_startup_script = file("${path.module}/files/gcp-compute-web.sh")
+  metadata_startup_script = file("${path.module}/files/gcp-compute-base.sh")
 
 
   network_interface {
