@@ -1,5 +1,5 @@
 # Create a single Compute Engine instance
-resource "google_compute_instance" "instance" {
+resource "google_compute_instance" "rocky9-docker" {
   name                = var.instance_vars["name"]
   machine_type        = var.instance_vars["machine_type"]
   zone                = var.instance_vars["zone"]
@@ -8,12 +8,9 @@ resource "google_compute_instance" "instance" {
 
   boot_disk {
     initialize_params {
-      image = var.image["rocky9"]
+      image = var.image["rocky9_docker"]
     }
   }
-
-  metadata_startup_script = file("${path.module}/files/gcp-compute-base.sh")
-
 
   network_interface {
     subnetwork = var.instance_vars["subnet_id"]

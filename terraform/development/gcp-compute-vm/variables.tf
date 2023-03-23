@@ -15,7 +15,8 @@ variable "image" {
   default = {
     cos97lts      = "cos-cloud/cos-97-lts"
     rocky8        = "rocky-linux-cloud/rocky-linux-8-optimized-gcp"
-    rocky9        = "homelab-369103/gcp-rocky9-base"
+    rocky9_base   = "homelab-369103/gcp-rocky9-base"
+    rocky9_docker = "homelab-369103/gcp-rocky9-docker"
     centos7       = "centos-cloud/centos-7"
     debian11      = "debian-cloud/debian-11"
     winserver2019 = "windows-cloud/windows-2019"
@@ -25,7 +26,7 @@ variable "image" {
 variable "instance_vars" {
   type = map(string)
   default = {
-    name         = "rocky9-web1"
+    name         = "rocky9-docker1"
     machine_type = "e2-small"
     subnet_id : "homelab-subnet"
     zone = "us-central1-c"
