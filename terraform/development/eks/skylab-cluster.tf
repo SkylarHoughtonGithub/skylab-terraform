@@ -28,12 +28,12 @@ module "eks" {
   iam_role_name             = "skylab-managed-node-group-role"
   aws_auth_roles = [
     {
-      rolearn  = "arn:aws:iam::150552228373:role/AWSReservedSSO_organization-cloud-admin_6c5a80f164495ef7"
+      rolearn  = "arn:aws:iam::111111111111:role/AWSReservedSSO_admin"
       username = "platform"
       groups   = ["system:masters"]
     },
     {
-      rolearn  = "arn:aws:iam::150552228373:role/cross_account_admin"
+      rolearn  = "arn:aws:iam::111111111111:role/admin"
       username = "platform"
       groups   = ["system:masters"]
     },
