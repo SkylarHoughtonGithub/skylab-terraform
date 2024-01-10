@@ -8,7 +8,7 @@ locals {
 
 locals {
   multiple_instances = {
-    one = {
+    tailscale = {
       associate_public_ip_address = true
       ami                         = data.aws_ami.amazon_linux.id
       instance_type               = "t3.small"
@@ -22,7 +22,11 @@ locals {
       subnet_id            = element(module.vpc.private_subnets, 0)
       user_data            = <<-EOT
         #!/bin/bash
-        echo "Hello Terraform!"
+        sudo yum install yum-utils
+        sudo yum-config-manager --add-repo https://pkgs.tailscale.com/stable/amazon-linux/2/tailscale.repo
+        sudo yum install tailscale
+        sudo systemctl enable --now tailscaled
+        sudo tailscale up
         EOT
       #   root_block_device = [
       #     {
