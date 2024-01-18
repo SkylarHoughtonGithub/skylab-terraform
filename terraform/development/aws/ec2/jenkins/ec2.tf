@@ -1,10 +1,9 @@
-resource "aws_placement_group" "web" {
+resource "aws_placement_group" "front_end" {
   name     = local.name
   strategy = "cluster"
 }
 
-resource "aws_kms_key" "this" {
-}
+resource "aws_kms_key" "this" {}
 
 resource "aws_network_interface" "this" {
   subnet_id = element(module.vpc.private_subnets, 0)
