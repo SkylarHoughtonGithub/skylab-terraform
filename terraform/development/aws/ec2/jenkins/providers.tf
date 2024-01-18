@@ -2,7 +2,7 @@ terraform {
   backend "s3" {
     bucket         = "skylab-platform-artifacts"
     region         = "us-east-2"
-    key            = "tfstate/dev/skylab/eks/terraform.tfstate"
+    key            = "tfstate/dev/skylab/ec2/jenkins/terraform.tfstate"
     encrypt        = true
     dynamodb_table = "LockID"
   }
@@ -23,14 +23,4 @@ provider "aws" {
 provider "aws" {
   alias  = "use2"
   region = "us-east-2"
-}
-
-data "aws_eks_cluster_auth" "default" {
-  name = module.eks.cluster_name
-}
-
-provider "kubernetes" {
-  host                   = module.eks.cluster_endpoint
-  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
-  token                  = data.aws_eks_cluster_auth.default.token
 }

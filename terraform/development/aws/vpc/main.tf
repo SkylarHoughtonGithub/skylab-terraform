@@ -14,6 +14,6 @@ module "vpc_use1" {
   single_nat_gateway      = try(each.value.single_nat_gateway, false)
   tags                    = try(each.value.tags, null)
   providers = {
-    aws = aws.use1
+    aws = aws.us-east-1
   }
 }
