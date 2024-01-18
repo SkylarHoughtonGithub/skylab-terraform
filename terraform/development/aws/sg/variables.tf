@@ -45,6 +45,11 @@ variable "sgs" {
           cidr_blocks = "0.0.0.0/0"
         },
       ]
+      tags = {
+        environment = "dev"
+        project     = "skylab"
+        codemanaged = true
+      }
     }
   }
 }
