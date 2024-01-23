@@ -4,7 +4,7 @@ variable "eks_api_allowed_cidrs" {
 
 locals {
   cluster_version                = "1.27"
-  cluster_endpoint_public_access = false
+  cluster_endpoint_public_access = true
   cluster_name                   = "skylab"
   cluster_addons = {
     coredns = {
@@ -23,11 +23,16 @@ locals {
       resolve_conflicts_on_create = true
     }
   }
-  create_aws_auth_configmap = false
-  manage_aws_auth_configmap = false
+  create_aws_auth_configmap = true #terraform import module.eks.kubernetes_config_map.aws_auth[0] kube-system/aws-auth
+  manage_aws_auth_configmap = true #https://stackoverflow.com/questions/69873472/configmaps-aws-auth-already-exists
   create_iam_role           = true
   iam_role_name             = "skylab-managed-node-group-role"
   aws_auth_roles = [
+    {
+      rolearn  = "arn:aws:iam::635314249418:user/chicken"
+      username = "chicken"
+      groups   = ["system:masters"]
+    },
     {
       rolearn  = "arn:aws:iam::635314249418:user/tetris"
       username = "tetris"
@@ -103,34 +108,34 @@ locals {
       cidr_blocks = var.eks_api_allowed_cidrs
     }
 
-    grafana = {
-      description = "grafana"
-      protocol    = "tcp"
-      from_port   = 3000
-      to_port     = 3000
-      type        = "ingress"
-      cidr_blocks = var.eks_api_allowed_cidrs
-    }
-    prometheus = {
-      description = "prometheus"
-      protocol    = "tcp"
-      from_port   = 9000
-      to_port     = 9100
-      type        = "ingress"
-      cidr_blocks = var.eks_api_allowed_cidrs
-    }
-    efs = {
-      description = "efs"
-      protocol    = "tcp"
-      from_port   = 2049
-      to_port     = 2049
-      type        = "ingress"
-      cidr_blocks = var.eks_api_allowed_cidrs
-    }
+    # grafana = {
+    #   description = "grafana"
+    #   protocol    = "tcp"
+    #   from_port   = 3000
+    #   to_port     = 3000
+    #   type        = "ingress"
+    #   cidr_blocks = var.eks_api_allowed_cidrs
+    # }
+    # prometheus = {
+    #   description = "prometheus"
+    #   protocol    = "tcp"
+    #   from_port   = 9000
+    #   to_port     = 9100
+    #   type        = "ingress"
+    #   cidr_blocks = var.eks_api_allowed_cidrs
+    # }
+    # efs = {
+    #   description = "efs"
+    #   protocol    = "tcp"
+    #   from_port   = 2049
+    #   to_port     = 2049
+    #   type        = "ingress"
+    #   cidr_blocks = var.eks_api_allowed_cidrs
+    # }
 
   }
-  subnet_ids = ["subnet-05af4226d2e26eee7", "subnet-0819ff61677c225a6"]
-  vpc_id     = "vpc-04d7e22454efae807"
+  subnet_ids = ["subnet-04610b8b2e54b8972", "subnet-0f91e00155d822ebd"]
+  vpc_id     = "vpc-0f6c219833fe92be7"
   tags = {
     Name        = "skylab"
     Environment = "dev"

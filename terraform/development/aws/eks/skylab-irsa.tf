@@ -1,30 +1,30 @@
 #TODO: Modularize and integrate with eks module
-# module "vpc_cni_ipv4_irsa_role" {
-#   source                = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-#   version               = "5.28.0"
-#   role_name             = "vpc-cni-ipv4"
-#   attach_vpc_cni_policy = true
-#   vpc_cni_enable_ipv4   = true
-#   oidc_providers = {
-#     cni = {
-#       provider_arn               = module.eks.oidc_provider_arn
-#       namespace_service_accounts = ["kube-system:aws-node"]
-#     }
-#   }
-# }
+module "vpc_cni_ipv4_irsa_role" {
+  source                = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version               = "5.28.0"
+  role_name             = "vpc-cni-ipv4"
+  attach_vpc_cni_policy = true
+  vpc_cni_enable_ipv4   = true
+  oidc_providers = {
+    cni = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:aws-node"]
+    }
+  }
+}
 
-# module "load_balancer_controller_irsa_role" {
-#   source                                 = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-#   version                                = "5.28.0"
-#   role_name                              = "aws-load-balancer-controller"
-#   attach_load_balancer_controller_policy = true
-#   oidc_providers = {
-#     lb = {
-#       provider_arn               = module.eks.oidc_provider_arn
-#       namespace_service_accounts = ["kube-system:aws-load-balancer-controller"]
-#     }
-#   }
-# }
+module "load_balancer_controller_irsa_role" {
+  source                                 = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version                                = "5.28.0"
+  role_name                              = "aws-load-balancer-controller"
+  attach_load_balancer_controller_policy = true
+  oidc_providers = {
+    lb = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:aws-load-balancer-controller"]
+    }
+  }
+}
 
 # module "external_dns_irsa_role" {
 #   source                        = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
