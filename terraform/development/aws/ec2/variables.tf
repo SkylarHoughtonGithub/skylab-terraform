@@ -46,9 +46,9 @@ locals {
 
       tags = {
         Name        = "jenkins1"
-        environment = "dev"
-        project     = "skylab"
-        codemanaged = true
+        Environment = "dev"
+        Project     = "skylab"
+        CodeManaged = true
 
       }
     }
