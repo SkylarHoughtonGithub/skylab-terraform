@@ -1,0 +1,82 @@
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'terraformFolder', defaultValue: 'terraform', description: 'Folder containing Terraform configuration files')
+    }
+
+    stages {
+
+    stage('Checkout') {
+        steps {
+            script {
+                // Specify your repository URL here
+                def repositoryUrl = 'https://github.com/SkylarHoughtonGithub/shoutsky-terraform.git'
+                
+                // Checkout the specified repository
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: repositoryUrl]]])
+            }
+        }
+    }
+
+        stage('Terraform Init') {
+            steps {
+                withAWS(credentials: 'aws-key', region: 'us-east-1') {
+                    script {
+                        // Change to the specified Terraform folder
+                        dir(params.terraformFolder) {
+                            // Run 'terraform init' command
+                            sh 'terraform init'
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Terraform Plan') {
+            steps {
+                withAWS(credentials: 'aws-key', region: 'us-east-1') {
+                    script {
+                        // Change to the specified Terraform folder
+                        dir(params.terraformFolder) {
+                            // Run 'terraform init' command
+                            sh 'terraform plan'
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Terraform Apply') {
+            steps {
+                withAWS(credentials: 'aws-key', region: 'us-east-1') { 
+                    script {
+
+                    // Change to the specified Terraform folder
+                    dir(params.terraformFolder) {
+                        // prompt for apply after reviewing tf plan
+                        input message: 'Do you want to apply Terraform changes?', ok: 'Apply'
+                        sh 'terraform apply -auto-approve'
+                    }
+                }
+            }
+        }
+    }
+}
+
+    post {
+        success {
+            // You can add additional steps or notifications on success
+            echo 'Terraform deployment successful!'
+        }
+
+        failure {
+            // You can add additional steps or notifications on failure
+            echo 'Terraform deployment failed!'
+        }
+
+        always {
+                    cleanWs()
+        }
+    }
+}
