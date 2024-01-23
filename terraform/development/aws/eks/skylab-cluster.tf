@@ -7,7 +7,7 @@ module "eks" {
 
   cluster_version                         = local.cluster_version
   cluster_endpoint_public_access          = local.cluster_endpoint_public_access
-  cluster_name                            = "skylab"
+  cluster_name                            = local.cluster_name
   cluster_addons                          = try(local.cluster_addons, null)
   create_aws_auth_configmap               = try(local.create_aws_auth_configmap, false)
   manage_aws_auth_configmap               = try(local.manage_aws_auth_configmap, false)

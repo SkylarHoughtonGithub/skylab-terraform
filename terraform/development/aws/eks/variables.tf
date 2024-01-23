@@ -29,13 +29,8 @@ locals {
   iam_role_name             = "skylab-managed-node-group-role"
   aws_auth_roles = [
     {
-      rolearn  = "arn:aws:iam::111111111111:role/AWSReservedSSO_admin"
-      username = "platform"
-      groups   = ["system:masters"]
-    },
-    {
-      rolearn  = "arn:aws:iam::111111111111:role/admin"
-      username = "platform"
+      rolearn  = "arn:aws:iam::635314249418:user/tetris"
+      username = "tetris"
       groups   = ["system:masters"]
     },
   ]
@@ -117,7 +112,7 @@ locals {
       cidr_blocks = var.eks_api_allowed_cidrs
     }
     prometheus = {
-      description = "grafana"
+      description = "prometheus"
       protocol    = "tcp"
       from_port   = 9000
       to_port     = 9100
@@ -125,7 +120,7 @@ locals {
       cidr_blocks = var.eks_api_allowed_cidrs
     }
     efs = {
-      description = "grafana"
+      description = "efs"
       protocol    = "tcp"
       from_port   = 2049
       to_port     = 2049
