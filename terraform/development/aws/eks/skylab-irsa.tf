@@ -26,19 +26,19 @@ module "load_balancer_controller_irsa_role" {
   }
 }
 
-# module "external_dns_irsa_role" {
-#   source                        = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-#   version                       = "5.28.0"
-#   role_name                     = "external-dns"
-#   attach_external_dns_policy    = true
-#   external_dns_hosted_zone_arns = ["arn:aws:route53:::hostedzone/Z088685221RW4JITTODNL"]
-#   oidc_providers = {
-#     dns = {
-#       provider_arn               = module.eks.oidc_provider_arn
-#       namespace_service_accounts = ["kube-system:external-dns"]
-#     }
-#   }
-# }
+module "external_dns_irsa_role" {
+  source                        = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version                       = "5.28.0"
+  role_name                     = "external-dns"
+  attach_external_dns_policy    = true
+  external_dns_hosted_zone_arns = ["arn:aws:route53:::hostedzone/Z03004421H5GOL6YJYUKN"] internal zone - #shoutsky.com
+  oidc_providers = {
+    dns = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:external-dns"]
+    }
+  }
+}
 
 # module "efs_csi_irsa_role" {
 #   source                = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
