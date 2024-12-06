@@ -5,6 +5,7 @@ module "eks" {
   cluster_version                = "1.31"
   cluster_endpoint_public_access = true
   cluster_name                   = "skylab"
+
   cluster_addons = {
     coredns = {
       most_recent                 = true
@@ -22,8 +23,10 @@ module "eks" {
       resolve_conflicts_on_create = true
     }
   }
+
   create_aws_auth_configmap               = true
   manage_aws_auth_configmap               = true
+
   create_iam_role                         = true
   iam_role_name                           = "skylab-managed-node-group-role"
   aws_auth_roles                          = [
@@ -33,6 +36,7 @@ module "eks" {
         groups   = ["system:masters"]
       },
     ]
+
   eks_managed_node_groups                 = {
       argo = {
         min_size       = 1
@@ -51,6 +55,7 @@ module "eks" {
         capacity_type  = "ON_DEMAND"
       }
     }
+    
   eks_managed_node_group_defaults         = {
       ami_type = "AL2_x86_64"
     }
@@ -109,33 +114,8 @@ module "eks" {
         type        = "ingress"
         cidr_blocks = var.eks_api_allowed_cidrs
       }
-
-      # grafana = {
-      #   description = "grafana"
-      #   protocol    = "tcp"
-      #   from_port   = 3000
-      #   to_port     = 3000
-      #   type        = "ingress"
-      #   cidr_blocks = var.eks_api_allowed_cidrs
-      # }
-      # prometheus = {
-      #   description = "prometheus"
-      #   protocol    = "tcp"
-      #   from_port   = 9000
-      #   to_port     = 9100
-      #   type        = "ingress"
-      #   cidr_blocks = var.eks_api_allowed_cidrs
-      # }
-      # efs = {
-      #   description = "efs"
-      #   protocol    = "tcp"
-      #   from_port   = 2049
-      #   to_port     = 2049
-      #   type        = "ingress"
-      #   cidr_blocks = var.eks_api_allowed_cidrs
-      # }
-
     }
+
   subnet_ids                              = ["subnet-04610b8b2e54b8972", "subnet-0f91e00155d822ebd"]
   vpc_id                                  = "vpc-0f6c219833fe92be7"
 

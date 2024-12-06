@@ -1,4 +1,3 @@
-#TODO: Modularize and integrate with eks module
 module "vpc_cni_ipv4_irsa_role" {
   source                = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version               = "5.28.0"
@@ -39,16 +38,3 @@ module "external_dns_irsa_role" {
     }
   }
 }
-
-# module "efs_csi_irsa_role" {
-#   source                = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-#   version               = "5.28.0"
-#   role_name             = "efs-csi"
-#   attach_efs_csi_policy = true
-#   oidc_providers = {
-#     csi = {
-#       provider_arn               = module.eks.oidc_provider_arn
-#       namespace_service_accounts = ["kube-system:efs-csi"]
-#     }
-#   }
-# }
