@@ -20,6 +20,10 @@ terraform {
 }
 
 provider "aws" {
+  region = "us-east-1"
+}
+
+provider "aws" {
   alias  = "us-east-1"
   region = "us-east-1"
 }
@@ -41,6 +45,6 @@ provider "kubernetes" {
 
 provider "helm" {
   kubernetes {
-    config_path = "~/.kube/config"  # Update this path to your kubeconfig location
+    config_path = "~/.kube/config" # Update this path to your kubeconfig location
   }
 }

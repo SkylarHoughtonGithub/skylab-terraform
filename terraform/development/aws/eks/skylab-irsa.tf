@@ -31,7 +31,7 @@ module "external_dns_irsa_role" {
   version                       = "5.28.0"
   role_name                     = "external-dns"
   attach_external_dns_policy    = true
-  external_dns_hosted_zone_arns = ["arn:aws:route53:::hostedzone/Z03004421H5GOL6YJYUKN"] internal zone - #shoutsky.com
+  external_dns_hosted_zone_arns = ["arn:aws:route53:::hostedzone/Z03004421H5GOL6YJYUKN"] #internal zone - shoutsky.com
   oidc_providers = {
     dns = {
       provider_arn               = module.eks.oidc_provider_arn

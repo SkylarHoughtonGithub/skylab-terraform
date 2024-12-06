@@ -34,11 +34,6 @@ locals {
         username = "chicken"
         groups   = ["system:masters"]
       },
-      {
-        rolearn  = "arn:aws:iam::635314249418:user/tetris"
-        username = "tetris"
-        groups   = ["system:masters"]
-      },
     ]
     eks_managed_node_groups = {
       medium = {
