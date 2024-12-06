@@ -1,55 +1,61 @@
-variable "eks_api_allowed_cidrs" {
-  default = ["172.16.192.0/18"]
-}
+module "eks" {
+  source  = "terraform-aws-modules/eks/aws"
+  version = "~> 19.0"
 
-locals {
-  us_east_1 = {
-    cluster_version                = "1.27"
-    cluster_endpoint_public_access = true
-    cluster_name                   = "skylab"
-    cluster_addons = {
-      coredns = {
-        most_recent                 = true
-        preserve                    = true
-        resolve_conflicts_on_create = true
-      }
-      kube-proxy = {
-        most_recent                 = true
-        preserve                    = true
-        resolve_conflicts_on_create = true
-      }
-      vpc-cni = {
-        most_recent                 = true
-        preserve                    = true
-        resolve_conflicts_on_create = true
-      }
+  cluster_version                = "1.31"
+  cluster_endpoint_public_access = true
+  cluster_name                   = "skylab"
+  cluster_addons = {
+    coredns = {
+      most_recent                 = true
+      preserve                    = true
+      resolve_conflicts_on_create = true
     }
-    create_aws_auth_configmap = true #terraform import module.eks.kubernetes_config_map.aws_auth[0] kube-system/aws-auth
-    manage_aws_auth_configmap = true #https://stackoverflow.com/questions/69873472/configmaps-aws-auth-already-exists
-    create_iam_role           = true
-    iam_role_name             = "skylab-managed-node-group-role"
-    aws_auth_roles = [
+    kube-proxy = {
+      most_recent                 = true
+      preserve                    = true
+      resolve_conflicts_on_create = true
+    }
+    vpc-cni = {
+      most_recent                 = true
+      preserve                    = true
+      resolve_conflicts_on_create = true
+    }
+  }
+  create_aws_auth_configmap               = true
+  manage_aws_auth_configmap               = true
+  create_iam_role                         = true
+  iam_role_name                           = "skylab-managed-node-group-role"
+  aws_auth_roles                          = [
       {
         rolearn  = "arn:aws:iam::635314249418:user/chicken"
         username = "chicken"
         groups   = ["system:masters"]
       },
     ]
-    eks_managed_node_groups = {
-      medium = {
+  eks_managed_node_groups                 = {
+      argo = {
         min_size       = 1
         max_size       = 3
-        desired_size   = 3
-        disk_size      = 3
+        desired_size   = 1
+        disk_type      = "gp3"
+        instance_types = ["t3.medium"]
+        capacity_type  = "ON_DEMAND"
+      }
+      backstage = {
+        min_size       = 1
+        max_size       = 3
+        desired_size   = 1
         disk_type      = "gp3"
         instance_types = ["t3.medium"]
         capacity_type  = "ON_DEMAND"
       }
     }
-    eks_managed_node_group_defaults = {
+  eks_managed_node_group_defaults         = {
       ami_type = "AL2_x86_64"
     }
-    cluster_security_group_additional_rules = {
+
+  cluster_security_group_additional_rules = {
       ingress_source_security_group_id = {
         description = "EKS Cluster Private API Access"
         protocol    = "tcp"
@@ -60,7 +66,7 @@ locals {
       }
     }
 
-    node_security_group_additional_rules = {
+  node_security_group_additional_rules    = {
       ingress_self_all = {
         description = "Node to node all ports/protocols"
         protocol    = "-1"
@@ -130,13 +136,18 @@ locals {
       # }
 
     }
-    subnet_ids = ["subnet-04610b8b2e54b8972", "subnet-0f91e00155d822ebd"]
-    vpc_id     = "vpc-0f6c219833fe92be7"
-    tags = {
+  subnet_ids                              = ["subnet-04610b8b2e54b8972", "subnet-0f91e00155d822ebd"]
+  vpc_id                                  = "vpc-0f6c219833fe92be7"
+
+  tags = {
       Name        = "skylab"
       Environment = "dev"
       Project     = "skylab"
       CodeManaged = true
     }
+
+
+  providers = {
+    aws = aws.us-east-1
   }
 }
