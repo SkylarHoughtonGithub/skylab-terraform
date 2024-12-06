@@ -15,7 +15,7 @@ locals {
         yum install wget -y
         amazon-linux-extras install epel -y
         yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-        curl -fsSL https://tailscale.com/install.sh | sh && sudo tailscale up --auth-key=tskey-auth-kLB6bLCeir11CNTRL-UbXC6UvGvbS1EFQVJiCsbSM6kNaFKxCsV --advertise-exit-node
+        curl -fsSL https://tailscale.com/install.sh | sh && sudo tailscale up --auth-key=tskey-auth-random-string --advertise-exit-node
         unzip awscliv2.zip
         ./aws/install
         EOF
