@@ -1,0 +1,17 @@
+version: 2
+ethernets:
+  %{ for idx, interface in interfaces ~}
+  eth${idx}:
+    match:
+      name: eth${idx}
+    %{ if dhcp_enabled ~}
+    dhcp4: true
+    dhcp6: false
+    %{ else ~}
+    addresses:
+      - ${ip_address}
+    gateway4: ${gateway}
+    nameservers:
+      addresses: ${jsonencode(dns_servers)}
+    %{ endif ~}
+  %{ endfor ~}
