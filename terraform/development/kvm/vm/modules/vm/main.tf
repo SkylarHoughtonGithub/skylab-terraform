@@ -11,7 +11,7 @@ resource "libvirt_volume" "root_volume" {
   name           = "${var.vm_name}-root"
   pool           = var.storage_pool
   base_volume_id = libvirt_volume.base_volume.id
-  size           = var.root_volume_size
+  size           = var.root_volume_size * 1024 * 1024 * 1024
 }
 
 # Dynamic additional disks
@@ -20,7 +20,7 @@ resource "libvirt_volume" "additional_volume" {
 
   name   = "${var.vm_name}-${each.key}"
   pool   = var.storage_pool
-  size   = each.value.size
+  size   = each.value.size * 1024 * 1024 * 1024
   format = "qcow2"
 }
 
