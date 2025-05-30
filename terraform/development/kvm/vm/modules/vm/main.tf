@@ -112,4 +112,9 @@ resource "libvirt_domain" "vm" {
       file = "/var/lib/libvirt/qemu/nvram/${var.vm_name}_VARS.fd"
     }
   }
+
+  graphics {
+    type        = "vnc"
+    listen_type = "address"
+  }
 }

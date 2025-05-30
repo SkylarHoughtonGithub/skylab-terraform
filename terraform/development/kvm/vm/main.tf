@@ -2,7 +2,7 @@ module "k3s_cluster_vms" {
   for_each = local.k3s_cluster
   source   = "./modules/vm"
 
-  base_image_path  = "/var/lib/libvirt/images/templates/alma9_base.qcow2"
+  base_image_path  = "https://repo.almalinux.org/almalinux/9/cloud/x86_64/images/AlmaLinux-9-GenericCloud-latest.x86_64.qcow2"
   domain           = "skylarhoughtongithub.com"
   memory           = each.value.memory
   root_volume_size = each.value.root_gb

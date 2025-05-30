@@ -41,6 +41,7 @@ variable "storage_pool" {
 variable "base_image_path" {
   description = "Path to the base OS image"
   type        = string
+  default = "https://repo.almalinux.org/almalinux/9/cloud/x86_64/images/AlmaLinux-9-GenericCloud-latest.x86_64.qcow2"
 }
 
 variable "root_volume_size" {
