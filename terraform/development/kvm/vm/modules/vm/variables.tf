@@ -28,7 +28,7 @@ variable "vcpu" {
 variable "cpu_mode" {
   description = "CPU mode (host-passthrough, host-model, custom)"
   type        = string
-  default     = "host-model"
+  default     = "custom"
 }
 
 # Storage Configuration
@@ -39,7 +39,7 @@ variable "storage_pool" {
 }
 
 variable "base_image_path" {
-  description = "Path to the base OS image"
+  description = "URL to the base OS image"
   type        = string
   default = "https://repo.almalinux.org/almalinux/9/cloud/x86_64/images/AlmaLinux-9-GenericCloud-latest.x86_64.qcow2"
 }
@@ -72,30 +72,6 @@ variable "network_interfaces" {
   }]
 }
 
-variable "dhcp_enabled" {
-  description = "Whether to use DHCP for network configuration"
-  type        = bool
-  default     = true
-}
-
-variable "static_ip_address" {
-  description = "Static IP address if DHCP is disabled (format: 192.168.1.100/24)"
-  type        = string
-  default     = ""
-}
-
-variable "gateway_address" {
-  description = "Gateway address if DHCP is disabled"
-  type        = string
-  default     = ""
-}
-
-variable "dns_servers" {
-  description = "List of DNS servers if DHCP is disabled"
-  type        = list(string)
-  default     = ["8.8.8.8", "8.8.4.4"]
-}
-
 variable "custom_network_config" {
   description = "Custom network config in cloud-init format (overrides generated network config)"
   type        = string
@@ -106,13 +82,13 @@ variable "custom_network_config" {
 variable "vm_user" {
   description = "Default user to create via cloud-init"
   type        = string
-  default     = "ubuntu"
+  default     = "ansible"
 }
 
 variable "vm_password" {
   description = "Password for the default user (leave empty for SSH-only authentication)"
   type        = string
-  default     = ""
+  default     = "password"
   sensitive   = true
 }
 

@@ -36,13 +36,7 @@ resource "libvirt_cloudinit_disk" "cloud_init" {
     custom_commands = var.custom_cloud_init_commands
   })
 
-  network_config = var.custom_network_config != "" ? var.custom_network_config : templatefile("${path.module}/templates/network_config.tftpl", {
-    dhcp_enabled = var.dhcp_enabled
-    ip_address   = var.static_ip_address
-    gateway      = var.gateway_address
-    dns_servers  = var.dns_servers
-    interfaces   = var.network_interfaces
-  })
+  network_config = var.custom_network_config != "" ? var.custom_network_config : file("${path.module}/templates/network_config.tftpl")
 }
 
 # Define the VM domain
