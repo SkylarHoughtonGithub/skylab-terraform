@@ -1,7 +1,7 @@
 module "vpc_use1" {
   source                  = "terraform-aws-modules/vpc/aws"
   version                 = "~> 5.0"
-  for_each                = var.networks_use1
+  for_each                = var.networks_use2
   azs                     = each.value.azs
   cidr                    = each.value.cidr
   enable_nat_gateway      = try(each.value.enable_nat_gateway, false)
@@ -14,6 +14,6 @@ module "vpc_use1" {
   single_nat_gateway      = try(each.value.single_nat_gateway, false)
   tags                    = try(each.value.tags, null)
   providers = {
-    aws = aws.us-east-1
+    aws = aws.us-east-2
   }
 }

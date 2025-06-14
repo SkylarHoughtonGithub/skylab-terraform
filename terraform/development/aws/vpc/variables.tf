@@ -1,18 +1,24 @@
-variable "networks_use1" {
+variable "networks_use2" {
   default = {
     "skylab" = {
-      azs  = ["us-east-1a", "us-east-1c"]
+      azs  = ["us-east-2a", "us-east-2c"]
       cidr = "192.168.0.0/16"
-      # enable_nat_gateway = true
+      enable_nat_gateway = false
+      enable_vpn_gateway = false
+      single_nat_gateway = false
+      one_nat_gateway_per_az = false
       map_public_ip_on_launch = true
-      private_subnets         = ["192.168.0.0/24", "192.168.1.0/24"]
-      public_subnets          = ["192.168.10.0/24", "192.168.11.0/24"]
-      # single_nat_gateway = true
+      
+      private_subnets = []
+      
+      public_subnets = [
+        "192.168.10.0/24",
+      ]
+      
       tags = {
-        environment = "dev"
-        node_group  = "small"
+        environment = "lab"
         project     = "skylab"
-        network     = "private"
+        network     = "public"    # Changed from "private" to "public"
       }
     }
   }
