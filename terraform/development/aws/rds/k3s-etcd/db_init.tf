@@ -36,7 +36,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO k3s_user;
 SQL
 
       # Execute the SQL script
-      PGPASSWORD='${var.k3s_master_password}' psql \
+      PGPASSWORD='${data.aws_ssm_parameter.etcd_master_password}' psql \
         -h ${aws_db_instance.k3s.endpoint} \
         -U k3s_admin \
         -d postgres \

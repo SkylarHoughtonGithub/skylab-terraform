@@ -1,4 +1,4 @@
-module "vpc_use1" {
+module "vpc_use2" {
   source                  = "terraform-aws-modules/vpc/aws"
   version                 = "~> 5.0"
   for_each                = var.networks_use2

@@ -1,5 +1,5 @@
 resource "aws_iam_role" "rds_monitoring" {
-  name = "${var.environment}-rds-monitoring-role"
+  name = "skylab-rds-monitoring-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"

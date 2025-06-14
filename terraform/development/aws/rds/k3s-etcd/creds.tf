@@ -19,7 +19,7 @@ resource "aws_ssm_parameter" "k3s_db_endpoint" {
   value = aws_db_instance.k3s.endpoint
 
   tags = {
-    Environment = var.environment
+    Environment = "lab"
   }
 }
 
@@ -29,7 +29,7 @@ resource "aws_ssm_parameter" "k3s_db_username" {
   value = "k3s_user" # Will be created via null_resource
 
   tags = {
-    Environment = var.environment
+    Environment = "lab"
   }
 }
 
@@ -39,7 +39,7 @@ resource "aws_ssm_parameter" "k3s_db_password" {
   value = random_password.k3s_user_password.result
 
   tags = {
-    Environment = var.environment
+    Environment = "lab"
   }
 }
 
@@ -49,7 +49,7 @@ resource "aws_ssm_parameter" "k3s_cluster1_token" {
   value = random_password.cluster1_token.result
 
   tags = {
-    Environment = var.environment
+    Environment = "lab"
   }
 }
 
@@ -59,6 +59,6 @@ resource "aws_ssm_parameter" "k3s_cluster2_token" {
   value = random_password.cluster2_token.result
 
   tags = {
-    Environment = var.environment
+    Environment = "lab"
   }
 }
