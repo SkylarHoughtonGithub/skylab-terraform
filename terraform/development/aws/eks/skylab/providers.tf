@@ -2,7 +2,7 @@ terraform {
   backend "s3" {
     bucket         = "skylab-platform-artifacts"
     region         = "us-east-2"
-    key            = "tfstate/dev/skylab/eks/terraform.tfstate"
+    key            = "tfstate/dev/skylab/aws/eks/terraform.tfstate"
     encrypt        = true
     dynamodb_table = "LockID"
   }
