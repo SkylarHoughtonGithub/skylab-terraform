@@ -1,7 +1,7 @@
 resource "aws_db_instance" "k3s" {
   identifier                   = "skylab-k3s-etcd"
   engine                       = "postgres"
-  engine_version               = "15.4"
+  engine_version               = "17.5"
   instance_class               = "db.t3.micro"
   allocated_storage            = 20
   max_allocated_storage        = 20 * 2
@@ -9,7 +9,7 @@ resource "aws_db_instance" "k3s" {
   storage_encrypted            = true
   db_name                      = "postgres"
   username                     = "etcd"
-  password                     = data.aws_ssm_parameter.etcd_master_password
+  password                     = data.aws_ssm_parameter.etcd_master_password.value
   db_subnet_group_name         = aws_db_subnet_group.k3s.name
   vpc_security_group_ids       = [aws_security_group.rds.id]
   publicly_accessible          = true

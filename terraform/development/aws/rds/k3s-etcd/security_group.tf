@@ -6,7 +6,7 @@ resource "aws_security_group" "rds" {
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
-    cidr_blocks = ["68.52.182.6 "]
+    cidr_blocks = ["68.52.182.6/32"]
     description = "PostgreSQL access for K3s clusters"
   }
 

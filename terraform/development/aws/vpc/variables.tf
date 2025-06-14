@@ -13,6 +13,7 @@ variable "networks_use2" {
 
       public_subnets = [
         "192.168.10.0/24",
+        "192.168.11.0/24",
       ]
 
       tags = {
