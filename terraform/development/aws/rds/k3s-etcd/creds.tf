@@ -14,7 +14,7 @@ resource "random_password" "cluster2_token" {
 }
 
 resource "aws_ssm_parameter" "k3s_db_endpoint" {
-  name  = "/k3s/shared/db/endpoint"
+  name  = "/k3s/db_endpoint"
   type  = "String"
   value = aws_db_instance.k3s.endpoint
 
@@ -24,9 +24,9 @@ resource "aws_ssm_parameter" "k3s_db_endpoint" {
 }
 
 resource "aws_ssm_parameter" "k3s_db_username" {
-  name  = "/k3s/shared/db/username"
+  name  = "/k3s/db_username"
   type  = "SecureString"
-  value = "k3s_user" # Will be created via null_resource
+  value = "k3s"
 
   tags = {
     Environment = "lab"
@@ -34,7 +34,7 @@ resource "aws_ssm_parameter" "k3s_db_username" {
 }
 
 resource "aws_ssm_parameter" "k3s_db_password" {
-  name  = "/k3s/shared/db/password"
+  name  = "/k3s/db_password"
   type  = "SecureString"
   value = random_password.k3s_user_password.result
 
