@@ -22,15 +22,15 @@ data "aws_vpc" "skylab" {
   }
 }
 
-data "aws_subnets" "skylab_private" {
+data "aws_subnets" "skylab_public" {
   filter {
     name   = "vpc-id"
     values = [data.aws_vpc.skylab.id]
   }
 
   filter {
-    name   = "tag:Type"
-    values = ["private", "Private"]
+    name   = "tag:type"
+    values = ["public"]
   }
 }
 
@@ -40,4 +40,8 @@ data "aws_availability_zones" "available" {
 
 data "aws_ssm_parameter" "tailscale_api_token" {
   name = "/tailscale/api_token"
+}
+
+data "aws_ecr_repository" "qdevice" {
+  name = "proxmox-qdevice"
 }

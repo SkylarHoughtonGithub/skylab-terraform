@@ -39,7 +39,7 @@ resource "aws_launch_template" "qdevice" {
 # Auto Scaling Group
 resource "aws_autoscaling_group" "qdevice" {
   name                      = "proxmox-qdevice-asg"
-  vpc_zone_identifier       = [data.aws_availability_zones.available]
+  vpc_zone_identifier       = data.aws_subnets.skylab_public.ids
   target_group_arns         = []
   health_check_type         = "EC2"
   health_check_grace_period = 300
@@ -103,8 +103,9 @@ resource "aws_ecs_task_definition" "qdevice" {
   container_definitions = jsonencode([
     {
       name      = "qdevice"
-      image     = "proxmox-qdevice:latest" # We'll build this
+      image     = local.proxmox_qdevice_repo
       essential = true
+      memory    = 128
 
       portMappings = [
         {
