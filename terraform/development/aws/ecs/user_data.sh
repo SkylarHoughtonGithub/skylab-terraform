@@ -27,6 +27,5 @@ mkdir -p /opt/qdevice-data
 chown 1000:1000 /opt/qdevice-data
 
 # Start ECS agent
-# If ecs isnt running after cloud-init finishes, enable ecs and reboot instance
 systemctl enable ecs
-systemctl start ecs
+reboot now
