@@ -39,19 +39,20 @@ jobs:
   validate:
     name: terraform validate
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        stack: [bootstrap, identity]
     steps:
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ env.TF_VERSION }}
-      - name: init (no backend)
-        run: terraform -chdir=stacks/${{ matrix.stack }} init -backend=false
-      - name: validate
-        run: terraform -chdir=stacks/${{ matrix.stack }} validate
+      - name: validate each stack
+        run: |
+          set -e
+          for stack in stacks/*/; do
+            echo "::group::$stack"
+            terraform -chdir="$stack" init -backend=false
+            terraform -chdir="$stack" validate
+            echo "::endgroup::"
+          done
 
   tflint:
     name: tflint
