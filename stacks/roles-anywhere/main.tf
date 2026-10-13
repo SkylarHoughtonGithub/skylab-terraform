@@ -64,6 +64,13 @@ module "external_secrets" {
   # TODO: tighten to least-privilege once we know which secret prefixes ESO reads.
 }
 
+# Scoped policy for Crossplane provider-aws, defined in stacks/crossplane.
+# Looked up by name so this stack doesn't need remote state from that one.
+# Keep var.crossplane_policy_name in sync with stacks/crossplane/var.policy_name.
+data "aws_iam_policy" "crossplane_aws" {
+  name = var.crossplane_policy_name
+}
+
 # Crossplane provider-aws — manages cloud resources from inside the cluster.
 module "crossplane_aws" {
   source = "../../modules/roles-anywhere"
@@ -75,9 +82,7 @@ module "crossplane_aws" {
 
   allowed_subject_cns = ["provider-aws.crossplane-system.svc"]
 
-  # Scaffold: AdministratorAccess. TODO: narrow to the service scopes the
-  # skylab-crossplane compositions actually use (eks, ec2, iam, s3, rds).
   managed_policy_arns = [
-    "arn:aws:iam::aws:policy/AdministratorAccess",
+    data.aws_iam_policy.crossplane_aws.arn,
   ]
 }
