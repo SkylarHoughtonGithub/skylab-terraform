@@ -42,7 +42,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        stack: [bootstrap, identity]
+        stack: [bootstrap, identity, storage]
     steps:
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
