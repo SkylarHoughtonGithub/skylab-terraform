@@ -1,6 +1,17 @@
 # S3 bucket for Terraform remote state across every other stack in this repo.
 # Native S3 lockfile locking (TF >= 1.11); no DynamoDB table required.
 
+resource "aws_kms_key" "state" {
+  description             = "Encrypts the Terraform state bucket."
+  deletion_window_in_days = 30
+  enable_key_rotation     = true
+}
+
+resource "aws_kms_alias" "state" {
+  name          = "alias/skylab-terraform-state"
+  target_key_id = aws_kms_key.state.id
+}
+
 resource "aws_s3_bucket" "state" {
   bucket        = var.state_bucket_name
   force_destroy = false
@@ -19,7 +30,8 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "state" {
 
   rule {
     apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256"
+      kms_master_key_id = aws_kms_key.state.arn
+      sse_algorithm     = "aws:kms"
     }
     bucket_key_enabled = true
   }
