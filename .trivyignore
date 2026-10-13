@@ -1,0 +1,13 @@
+# stacks/gcp-identity — scaffold-time broad roles.
+#
+# The terraform-ci service account is granted roles/owner (mirror of the
+# AWS AdministratorAccess attachment on the Terraform-CI role in
+# stacks/identity). The Crossplane service account is granted roles/editor
+# as a stand-in until stacks/crossplane produces a scoped custom role for
+# GCP (same shape as the scoped IAM policy on the AWS side).
+#
+# Each binding has a TODO comment in stacks/gcp-identity/main.tf; tighten
+# once each stack's real API surface is pinned.
+AVD-GCP-0007
+AVD-GCP-0011
+AVD-GCP-0012
