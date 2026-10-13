@@ -1,0 +1,81 @@
+name: terraform
+
+on:
+  pull_request:
+    paths:
+      - 'modules/**'
+      - 'stacks/**'
+      - '.github/workflows/terraform.yml'
+      - '.tflint.hcl'
+  push:
+    branches: [main]
+    paths:
+      - 'modules/**'
+      - 'stacks/**'
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  TF_VERSION: "1.11.4"
+
+jobs:
+  fmt:
+    name: terraform fmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+      - name: fmt check (modules + stacks only)
+        run: terraform fmt -recursive -check -diff modules stacks
+
+  validate:
+    name: terraform validate
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        stack: [bootstrap, identity]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+      - name: init (no backend)
+        run: terraform -chdir=stacks/${{ matrix.stack }} init -backend=false
+      - name: validate
+        run: terraform -chdir=stacks/${{ matrix.stack }} validate
+
+  tflint:
+    name: tflint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: terraform-linters/setup-tflint@v4
+      - name: lint each dir
+        run: |
+          set -e
+          for dir in modules/* stacks/*; do
+            echo "::group::$dir"
+            (cd "$dir" && tflint --init && tflint)
+            echo "::endgroup::"
+          done
+
+  trivy:
+    name: trivy (IaC)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: config
+          exit-code: '1'
+          severity: HIGH,CRITICAL
+          skip-dirs: 'terraform,.github'
