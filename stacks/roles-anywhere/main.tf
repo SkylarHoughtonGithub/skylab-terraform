@@ -21,7 +21,7 @@ resource "aws_rolesanywhere_trust_anchor" "step_ca" {
 
 # Loki — writes chunks and indexes to its S3 bucket (storage stack).
 module "loki" {
-  source = "../../modules/roles-anywhere"
+  source = "../../modules/aws-roles-anywhere"
 
   trust_anchor_arn = aws_rolesanywhere_trust_anchor.step_ca.arn
   role_name        = "skylab-loki"
@@ -35,7 +35,7 @@ module "loki" {
 
 # Tempo — writes traces to its S3 bucket.
 module "tempo" {
-  source = "../../modules/roles-anywhere"
+  source = "../../modules/aws-roles-anywhere"
 
   trust_anchor_arn = aws_rolesanywhere_trust_anchor.step_ca.arn
   role_name        = "skylab-tempo"
@@ -49,7 +49,7 @@ module "tempo" {
 
 # External Secrets Operator — reads secrets from AWS Secrets Manager.
 module "external_secrets" {
-  source = "../../modules/roles-anywhere"
+  source = "../../modules/aws-roles-anywhere"
 
   trust_anchor_arn = aws_rolesanywhere_trust_anchor.step_ca.arn
   role_name        = "skylab-external-secrets"
@@ -73,7 +73,7 @@ data "aws_iam_policy" "crossplane_aws" {
 
 # Crossplane provider-aws — manages cloud resources from inside the cluster.
 module "crossplane_aws" {
-  source = "../../modules/roles-anywhere"
+  source = "../../modules/aws-roles-anywhere"
 
   trust_anchor_arn = aws_rolesanywhere_trust_anchor.step_ca.arn
   role_name        = "skylab-crossplane-aws"
