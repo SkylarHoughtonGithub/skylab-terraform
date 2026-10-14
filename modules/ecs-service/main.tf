@@ -22,17 +22,19 @@ resource "aws_cloudwatch_log_group" "this" {
   tags = var.tags
 }
 
+# trivy:ignore:AVD-AWS-0104 Fargate tasks require egress to pull from ECR and reach AWS service APIs. Tighten in callers via VPC endpoints + specific prefix lists if needed; the scaffold-level default is HTTPS-only.
 resource "aws_security_group" "this" {
   name        = "${var.name}-task"
   description = "Egress-only SG for the ${var.name} Fargate task."
   vpc_id      = var.vpc_id
 
-  # Egress-only. Ingress is added by the caller if the service needs it.
+  # HTTPS egress for AWS APIs, ECR, Secrets Manager, CloudWatch Logs.
+  # Ingress is added by the caller if the service needs it.
   egress {
-    description      = "Allow all egress."
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
+    description      = "HTTPS egress for AWS API calls and ECR image pulls."
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
