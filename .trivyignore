@@ -11,3 +11,9 @@
 AVD-GCP-0007
 AVD-GCP-0011
 AVD-GCP-0012
+
+# The step-ca X.509 pool provider has no attribute_condition because
+# allowed subject CNs are pinned per-service-account via the
+# `principal://.../subject/<cn>` member on the impersonation binding.
+# The per-SA pin is strictly tighter than a pool-level condition.
+AVD-GCP-0068
