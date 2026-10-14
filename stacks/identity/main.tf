@@ -17,7 +17,7 @@ resource "aws_iam_openid_connect_provider" "github" {
 # CI role for skylab-terraform itself. Lets Actions in this repo plan and
 # apply the Terraform stacks here.
 module "terraform_ci_role" {
-  source = "../../modules/github-oidc"
+  source = "../../modules/aws-github-oidc"
 
   role_name         = "skylab-terraform-ci"
   description       = "GitHub Actions CI role for the skylab-terraform repo."

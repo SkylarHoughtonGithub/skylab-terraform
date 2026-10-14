@@ -39,7 +39,7 @@ locals {
 }
 
 module "loki" {
-  source = "../../modules/object-storage"
+  source = "../../modules/aws-object-storage"
 
   bucket_name     = "${var.bucket_name_prefix}-loki"
   kms_key_arn     = aws_kms_key.storage.arn
@@ -51,7 +51,7 @@ module "loki" {
 }
 
 module "tempo" {
-  source = "../../modules/object-storage"
+  source = "../../modules/aws-object-storage"
 
   bucket_name     = "${var.bucket_name_prefix}-tempo"
   kms_key_arn     = aws_kms_key.storage.arn
@@ -63,7 +63,7 @@ module "tempo" {
 }
 
 module "techdocs" {
-  source = "../../modules/object-storage"
+  source = "../../modules/aws-object-storage"
 
   bucket_name = "${var.bucket_name_prefix}-techdocs"
   kms_key_arn = aws_kms_key.storage.arn

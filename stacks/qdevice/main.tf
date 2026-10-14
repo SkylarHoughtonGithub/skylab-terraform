@@ -46,7 +46,7 @@ resource "aws_ecr_lifecycle_policy" "qdevice" {
 }
 
 module "qdevice" {
-  source = "../../modules/ecs-service"
+  source = "../../modules/aws-ecs-service"
 
   name       = "qdevice"
   vpc_id     = var.vpc_id
