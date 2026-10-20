@@ -71,6 +71,7 @@ Terraform's `stacks/roles-anywhere` is live, so these can land next:
 - Port the actual qdevice container logic from `shoutsky-images/images/proxmox-qdevice`.
 - qdevice image build+push CI.
 - Retire `terraform/development/` legacy content once nothing references it.
+- **Release strategy: release-please + Conventional Commits.** Fleet-wide decision (see `skylab-gitops/plan.md`); applied here with `release-type: simple` at repo root for now. Config in `release-please-config.json`, state in `.release-please-manifest.json`, workflow at `.github/workflows/release-please.yaml`. Module-level versioning (`release-type: terraform-module`, per-module manifest) is a follow-up for when any module is consumed via remote ref — today everything is local-path.
 
 ### Deferred CI work in skylab-gitops
 
