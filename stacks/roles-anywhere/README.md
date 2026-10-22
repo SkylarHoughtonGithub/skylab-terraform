@@ -39,9 +39,16 @@ terraform apply -var "step_ca_root_pem=$(cat step_ca_root.pem)"
 
 ## Wiring into Kubernetes
 
-Each workload needs:
+The gitops side ships `charts/aws-signing-helper/` — a wave-0 CronJob that presents a step-ca-issued mTLS cert to Roles Anywhere every 10 min and writes session credentials into `eso-aws-credentials` for ESO's AWS `ClusterSecretStore` to read. It takes three of this stack's outputs as values:
 
-1. A cert-manager Certificate (via `StepClusterIssuer`) whose `commonName` matches the role's `allowed_subject_cns`.
-2. The `aws_signing_helper credential-process` sidecar (or the aws-sigv4-signer initContainer) referencing the profile + role ARN output from this stack.
+| Terraform output | gitops values key |
+| --- | --- |
+| `trust_anchor_arn` | `rolesAnywhere.trustAnchorArn` |
+| `external_secrets_profile_arn` | `rolesAnywhere.profileArn` |
+| `external_secrets_role_arn` | `rolesAnywhere.roleArn` |
 
-See `plan.md` for the deferred wiring work in `skylab-gitops` once step-ca is live.
+The chart's `certificate.commonName` default (`aws-signing-helper`) must match the `allowed_subject_cns` entry on the external-secrets role.
+
+Crossplane provider-aws reuses the pattern with the `crossplane_aws_*` outputs — wiring lives in `charts/crossplane-providers/` on the gitops side.
+
+See **`skylab-gitops/docs/runbooks/live-aws-standup.md`** for the full cross-repo standup: Terraform apply → values seeding → ESO flip-on → Crossplane wave 1 → first XR provisioning.
