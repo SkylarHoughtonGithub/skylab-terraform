@@ -1,6 +1,6 @@
 # stacks/roles-anywhere
 
-IAM Roles Anywhere trust anchor rooted at step-ca, plus one profile+role per Skylab workload that needs short-lived AWS credentials without any static keys.
+IAM Roles Anywhere trust anchor rooted at the Skylab offline root CA (see `scripts/skylab-ca.sh`), plus one profile+role per Skylab workload that needs short-lived AWS credentials without any static keys.
 
 ## Workloads currently covered
 
@@ -15,12 +15,13 @@ Bucket-scoped inline policies land once `stacks/storage/` provides bucket ARNs.
 
 ## Prerequisites
 
-1. **step-ca is running** in the hub cluster (wave 0 in `skylab-gitops`).
-2. **step-ca's root PEM** is retrievable — grab it with:
-   ```sh
-   kubectl -n step-ca get secret step-ca-certs -o jsonpath='{.data.root_ca\.crt}' | base64 -d
-   ```
-   Save as `step_ca_root.pem` (do not commit).
+The Skylab root CA exists locally. Generate once with:
+
+```sh
+./scripts/skylab-ca.sh init-root
+```
+
+Private key stays under `$SKYLAB_CA_DIR` (default `~/.skylab-ca`, chmod 700). Back it up encrypted before registering a trust anchor against it. The `step_ca_root_pem` variable name is retained for backward compatibility with the stack's inputs.
 
 ## Deploy
 
@@ -34,12 +35,12 @@ terraform init \
   -backend-config="encrypt=true" \
   -backend-config="use_lockfile=true"
 
-terraform apply -var "step_ca_root_pem=$(cat step_ca_root.pem)"
+terraform apply -var "step_ca_root_pem=$(../../scripts/skylab-ca.sh show-root)"
 ```
 
 ## Wiring into Kubernetes
 
-The gitops side ships `charts/aws-signing-helper/` — a wave-0 CronJob that presents a step-ca-issued mTLS cert to Roles Anywhere every 10 min and writes session credentials into `eso-aws-credentials` for ESO's AWS `ClusterSecretStore` to read. It takes three of this stack's outputs as values:
+The gitops side ships `charts/aws-signing-helper/` — a wave-0 CronJob that presents an mTLS cert to Roles Anywhere every 10 min and writes session credentials into `eso-aws-credentials` for ESO's AWS `ClusterSecretStore` to read. Leaf cert comes from `scripts/skylab-ca.sh issue` and lands in-cluster via `install-k8s` (see the gitops standup runbook). It takes three of this stack's outputs as values:
 
 | Terraform output | gitops values key |
 | --- | --- |
