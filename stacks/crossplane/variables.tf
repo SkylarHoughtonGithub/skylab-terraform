@@ -1,7 +1,7 @@
 variable "region" {
   type        = string
   description = "AWS region for the policy. Policies are global but the provider needs one."
-  default     = "us-east-1"
+  default     = "us-east-2"
 }
 
 variable "policy_name" {

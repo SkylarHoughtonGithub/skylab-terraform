@@ -1,7 +1,7 @@
 variable "region" {
   type        = string
   description = "AWS region for the qdevice ECR repo, KMS key, and ECS service."
-  default     = "us-east-1"
+  default     = "us-east-2"
 }
 
 variable "vpc_id" {

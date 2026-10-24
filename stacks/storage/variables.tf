@@ -1,7 +1,7 @@
 variable "region" {
   type        = string
   description = "AWS region for the storage buckets and their KMS key."
-  default     = "us-east-1"
+  default     = "us-east-2"
 }
 
 variable "bucket_name_prefix" {
