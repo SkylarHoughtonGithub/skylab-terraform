@@ -56,7 +56,9 @@ module "external_secrets" {
   profile_name     = "skylab-external-secrets"
   description      = "ESO ClusterSecretStore for AWS Secrets Manager."
 
-  allowed_subject_cns = ["external-secrets.external-secrets.svc"]
+  # Matches the aws-signing-helper chart's certificate.commonName default,
+  # which is also the leaf CN scripts/skylab-ca.sh issues by workload name.
+  allowed_subject_cns = ["aws-signing-helper"]
 
   managed_policy_arns = [
     "arn:aws:iam::aws:policy/SecretsManagerReadWrite",

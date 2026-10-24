@@ -207,7 +207,7 @@ module "external_secrets_gcp" {
   description  = "ESO ClusterSecretStore for GCP Secret Manager."
 
   impersonation_members = [
-    "principal://iam.googleapis.com/${google_iam_workload_identity_pool.hub.name}/subject/external-secrets.external-secrets.svc",
+    "principal://iam.googleapis.com/${google_iam_workload_identity_pool.hub.name}/subject/aws-signing-helper",
   ]
 
   # TODO: tighten to specific secret paths once we know what ESO reads.

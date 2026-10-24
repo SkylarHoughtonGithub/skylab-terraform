@@ -22,7 +22,7 @@ Add a `backend "s3"` block to each other stack's `providers.tf`:
 backend "s3" {
   bucket       = "<state_bucket_name>"
   key          = "stacks/<stack-name>/terraform.tfstate"
-  region       = "us-east-1"
+  region       = "us-east-2"
   encrypt      = true
   use_lockfile = true   # native S3 locking (TF >= 1.11)
 }

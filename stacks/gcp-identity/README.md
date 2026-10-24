@@ -26,7 +26,7 @@ cd stacks/gcp-identity
 terraform init \
   -backend-config="bucket=<state_bucket_name>" \
   -backend-config="key=stacks/gcp-identity/terraform.tfstate" \
-  -backend-config="region=us-east-1" \
+  -backend-config="region=us-east-2" \
   -backend-config="encrypt=true" \
   -backend-config="use_lockfile=true"
 
@@ -56,7 +56,7 @@ Each workload needs:
 
 1. A `cert-manager` Certificate (via `StepClusterIssuer`) with the matching `commonName` pinned on the service account's `impersonation_members`:
    - `provider-gcp.crossplane-system.svc`
-   - `external-secrets.external-secrets.svc`
+   - `aws-signing-helper` (matches the aws-signing-helper chart default; same leaf cert the AWS Roles Anywhere external_secrets role accepts)
    - `argocd-server.argocd.svc`, `argocd-application-controller.argocd.svc`
 2. A credential config pointing at the pool provider and target service account. GCP's `gcloud auth login --cred-file=…` or the Workload Identity Federation client libraries both accept X.509 config files; see `plan.md` for the deferred wiring work in `skylab-gitops`.
 

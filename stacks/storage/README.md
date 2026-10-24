@@ -16,7 +16,7 @@ cd stacks/storage
 terraform init \
   -backend-config="bucket=<state_bucket_name>" \
   -backend-config="key=stacks/storage/terraform.tfstate" \
-  -backend-config="region=us-east-1" \
+  -backend-config="region=us-east-2" \
   -backend-config="encrypt=true" \
   -backend-config="use_lockfile=true"
 

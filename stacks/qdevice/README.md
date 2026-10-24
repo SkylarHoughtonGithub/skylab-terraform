@@ -25,7 +25,7 @@ The repo intentionally has **no image-build CI** for qdevice yet; builds are man
 ```sh
 cd stacks/qdevice
 
-AWS_REGION=us-east-1
+AWS_REGION=us-east-2
 ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 ECR=${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/skylab-qdevice
 
@@ -42,7 +42,7 @@ Tags are `IMMUTABLE`; to roll a new scaffold use a different tag (e.g. `scaffold
 
 | Name | Default | Notes |
 | --- | --- | --- |
-| `region` | `us-east-1` | Region for ECR, KMS, ECS. |
+| `region` | `us-east-2` | Region for ECR, KMS, ECS. |
 | `vpc_id` | — | Required. |
 | `subnet_ids` | — | Required. Must reach ECR + CloudWatch Logs; eventually the Proxmox nodes too. |
 | `image_tag` | `scaffold` | Tag pushed by the manual build above. |
