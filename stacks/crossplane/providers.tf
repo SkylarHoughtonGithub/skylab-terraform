@@ -1,4 +1,9 @@
 terraform {
+  backend "s3" {
+    bucket = "skylab-platform-635314249418"
+    key    = "terraform/crossplane"
+    region = "us-east-2"
+  }
   required_version = ">= 1.11"
 
   required_providers {
@@ -7,9 +12,6 @@ terraform {
       version = "~> 6.0"
     }
   }
-
-  # Backend config supplied via -backend-config at `terraform init` time.
-  backend "s3" {}
 }
 
 provider "aws" {
